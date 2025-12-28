@@ -1,8 +1,7 @@
 # String Search Algorithms
 
-Fast, practical Dart library for string similarity and substring search. Pure
-Dart, null-safe, with configurable engines and caching for repeated
-comparisons.
+Simple Dart library for string similarity and substring search. Pure Dart,
+null-safe, with configurable engines and caching for repeated comparisons.
 
 ## Highlights
 
