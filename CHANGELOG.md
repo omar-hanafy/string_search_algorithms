@@ -2,6 +2,13 @@
 
 All notable changes to this package will be documented in this file.
 
+## 1.0.1
+
+### Documentation
+
+- Refresh package description and README introduction copy.
+- Update README install snippet for 1.0.1.
+
 ## 1.0.0
 
 ### Added
