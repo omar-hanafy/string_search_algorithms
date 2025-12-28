@@ -2,6 +2,7 @@ name: pub-dry-run
 
 on:
   pull_request:
+    branches: [main, dev]
   push:
     branches: [main, dev]
 
@@ -10,6 +11,7 @@ permissions:
 
 jobs:
   dry-run:
+    name: pub-dry-run
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -118,7 +118,7 @@ class SimilarityContext {
   }
 
   /// Returns n-grams for a normalized string (cached if enabled).
-  /// If [n] is null, uses [options.algorithms.ngramSize].
+  /// If [n] is null, uses `options.algorithms.ngramSize`.
   List<String> ngrams(String normalized, {int? n}) {
     final size = n ?? options.algorithms.ngramSize;
     if (size <= 0) return const <String>[];
