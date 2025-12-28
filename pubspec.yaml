@@ -1,6 +1,6 @@
 name: string_search_algorithms
-description: String similarity and search library. Features instance-based engines, customizable normalization, and multiple algorithms (Levenshtein, Jaro-Winkler, KMP, etc.).
-version: 1.0.0
+description: Fast Dart library for string similarity and substring search with configurable engines, normalization, and caching. Pure Dart and null-safe.
+version: 1.0.1
 repository: https://github.com/omar-hanafy/string_search_algorithms
 issue_tracker: https://github.com/omar-hanafy/string_search_algorithms/issues
 homepage: https://github.com/omar-hanafy/string_search_algorithms

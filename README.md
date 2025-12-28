@@ -1,8 +1,8 @@
 # String Search Algorithms
 
-Production-grade Dart library for fast string similarity scoring and substring
-search. Pure Dart, null-safe, and optimized for repeated comparisons with
-instance-based engines and caching.
+Fast, practical Dart library for string similarity and substring search. Pure
+Dart, null-safe, with configurable engines and caching for repeated
+comparisons.
 
 ## Highlights
 
@@ -18,7 +18,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  string_search_algorithms: ^1.0.0
+  string_search_algorithms: ^1.0.1
 ```
 
 ## Quick start
