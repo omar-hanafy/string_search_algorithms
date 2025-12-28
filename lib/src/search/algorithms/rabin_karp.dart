@@ -1,9 +1,12 @@
-import '../models/compiled_pattern.dart';
+import 'package:string_search_algorithms/src/search/models/compiled_pattern.dart';
 
-import '../../common/exceptions.dart';
-import '../models/search_match.dart';
-import 'search_algorithm.dart';
+import 'package:string_search_algorithms/src/common/exceptions.dart';
+import 'package:string_search_algorithms/src/search/models/search_match.dart';
+import 'package:string_search_algorithms/src/search/algorithms/search_algorithm.dart';
 
+/// Compiles [pattern] into a Rabin-Karp compiled pattern.
+///
+/// Throws [InvalidInputException] if [pattern] is empty.
 CompiledPattern compileRabinKarp(String pattern) {
   if (pattern.isEmpty) {
     throw InvalidInputException(
@@ -138,7 +141,8 @@ class _RabinKarpCompiledPattern implements CompiledPattern {
     return hash;
   }
 
-  static int _hashWindow(String text, int start, int length, int base, int mod) {
+  static int _hashWindow(
+      String text, int start, int length, int base, int mod) {
     var hash = 0;
     final end = start + length;
     for (var i = start; i < end; i++) {

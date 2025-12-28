@@ -12,7 +12,7 @@ void main() {
               algorithm: SearchAlgorithm.rabinKarp),
           equals(16));
     });
-    
+
     test('findAll', () {
       final t = 'aba aba aba';
       final p = 'aba';

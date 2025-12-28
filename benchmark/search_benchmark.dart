@@ -12,25 +12,34 @@ class SearchBenchmark {
   final String shortPattern = 'brown';
 
   final String longText =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' * 1000; // ~55KB
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' *
+          1000; // ~55KB
   final String longPattern = 'consectetur';
 
   void run() {
     print('--- Short Text (${shortText.length} chars) ---');
     _measure('KMP', SearchAlgorithm.kmp, shortText, shortPattern, 10000);
-    _measure('Boyer-Moore', SearchAlgorithm.boyerMoore, shortText, shortPattern, 10000);
-    _measure('Rabin-Karp', SearchAlgorithm.rabinKarp, shortText, shortPattern, 10000);
-    _measure('Standard', SearchAlgorithm.boyerMoore, shortText, shortPattern, 10000);
-    
+    _measure('Boyer-Moore', SearchAlgorithm.boyerMoore, shortText, shortPattern,
+        10000);
+    _measure('Rabin-Karp', SearchAlgorithm.rabinKarp, shortText, shortPattern,
+        10000);
+    _measure(
+        'Standard', SearchAlgorithm.boyerMoore, shortText, shortPattern, 10000);
+
     print('\n--- Long Text (${longText.length} chars) ---');
     _measure('KMP', SearchAlgorithm.kmp, longText, longPattern, 100);
-    _measure('Boyer-Moore', SearchAlgorithm.boyerMoore, longText, longPattern, 100);
-    _measure('Rabin-Karp', SearchAlgorithm.rabinKarp, longText, longPattern, 100);
-    _measure('Standard', SearchAlgorithm.boyerMoore, longText, longPattern, 100);
+    _measure(
+        'Boyer-Moore', SearchAlgorithm.boyerMoore, longText, longPattern, 100);
+    _measure(
+        'Rabin-Karp', SearchAlgorithm.rabinKarp, longText, longPattern, 100);
+    _measure(
+        'Standard', SearchAlgorithm.boyerMoore, longText, longPattern, 100);
 
     print('\n--- Compiled Pattern Reuse (Short Text) ---');
-    _measureCompiled('KMP', SearchAlgorithm.kmp, shortText, shortPattern, 10000);
-    _measureCompiled('Boyer-Moore', SearchAlgorithm.boyerMoore, shortText, shortPattern, 10000);
+    _measureCompiled(
+        'KMP', SearchAlgorithm.kmp, shortText, shortPattern, 10000);
+    _measureCompiled('Boyer-Moore', SearchAlgorithm.boyerMoore, shortText,
+        shortPattern, 10000);
   }
 
   void _measure(
@@ -44,15 +53,15 @@ class SearchBenchmark {
     StringSearch.indexOf(text, pattern, algorithm: algorithm);
 
     final stopwatch = Stopwatch()..start();
-    
+
     for (var i = 0; i < iterations; i++) {
       StringSearch.indexOf(text, pattern, algorithm: algorithm);
     }
-    
+
     stopwatch.stop();
     final totalMicroseconds = stopwatch.elapsedMicroseconds;
     final avgMicroseconds = totalMicroseconds / iterations;
-    
+
     print('$name: ${avgMicroseconds.toStringAsFixed(2)} µs/op');
   }
 
@@ -64,20 +73,20 @@ class SearchBenchmark {
     int iterations,
   ) {
     final pattern = StringSearch.compile(patternStr, algorithm: algorithm);
-    
+
     // Warmup
     pattern.indexOfIn(text);
 
     final stopwatch = Stopwatch()..start();
-    
+
     for (var i = 0; i < iterations; i++) {
       pattern.indexOfIn(text);
     }
-    
+
     stopwatch.stop();
     final totalMicroseconds = stopwatch.elapsedMicroseconds;
     final avgMicroseconds = totalMicroseconds / iterations;
-    
+
     print('$name (Compiled): ${avgMicroseconds.toStringAsFixed(2)} µs/op');
   }
 }

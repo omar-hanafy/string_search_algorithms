@@ -1,8 +1,12 @@
 /// A value paired with an elapsed duration.
 class TimedValue<T> {
+  /// Creates a [TimedValue].
   const TimedValue(this.value, this.elapsed);
 
+  /// The result value.
   final T value;
+
+  /// The duration it took to produce the value.
   final Duration elapsed;
 }
 

@@ -1,6 +1,7 @@
-import '../context.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
+/// Implements Hamming Distance.
 class HammingMetric implements SimilarityMetric {
   @override
   String get id => 'hamming';

@@ -20,15 +20,16 @@ void main() {
     });
 
     test('different lengths', () {
-       // Implementation note: Hamming usually undefined for different lengths.
-       // The engine returns max distance (normalized to 0.0 similarity usually).
-       // In our implementation, it returns s1.length (max distance).
-       // Wait, the engine normalizes: score = 1.0 - (score / maxLength).
-       // If score is s1.length, and maxLength is s1.length (if s1>=s2), result is 0.
-       expect(
-         'abc'.similarityTo('abcd', algorithm: SimilarityAlgorithm.hamming),
-         equals(0.0),
-       );
+      // Implementation note: Hamming usually undefined for different lengths.
+      // The engine returns max distance (normalized to 0.0 similarity usually).
+      // In our implementation, it returns s1.length (max distance).
+      // Wait, the engine normalizes: score = 1.0 - (score / maxLength).
+      // If score is s1.length, and maxLength is s1.length (if s1>=s2), result
+      // is 0.
+      expect(
+        'abc'.similarityTo('abcd', algorithm: SimilarityAlgorithm.hamming),
+        equals(0.0),
+      );
     });
   });
 }

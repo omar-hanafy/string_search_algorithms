@@ -13,7 +13,8 @@ void main() {
 
     test('extension method', () {
       expect(
-        'Philip'.similarityTo('Phillip', algorithm: SimilarityAlgorithm.metaphone),
+        'Philip'
+            .similarityTo('Phillip', algorithm: SimilarityAlgorithm.metaphone),
         equals(1.0),
       );
     });

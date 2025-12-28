@@ -3,6 +3,7 @@
 /// This is NOT a full Porter stemmer; it is intentionally simple, fast, and
 /// predictable for production usage in a general-purpose library.
 class BasicStemmer {
+  /// Creates a [BasicStemmer].
   const BasicStemmer();
 
   /// Returns a stemmed version of [word].

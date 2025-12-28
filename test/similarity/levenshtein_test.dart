@@ -14,20 +14,22 @@ void main() {
 
     test('extension method', () {
       expect(
-        'kitten'.similarityTo('sitting', algorithm: SimilarityAlgorithm.levenshtein),
+        'kitten'.similarityTo('sitting',
+            algorithm: SimilarityAlgorithm.levenshtein),
         closeTo(0.57, 0.01),
       );
     });
 
     test('identical strings', () {
       expect(
-        'hello'.similarityTo('hello', algorithm: SimilarityAlgorithm.levenshtein),
+        'hello'
+            .similarityTo('hello', algorithm: SimilarityAlgorithm.levenshtein),
         equals(1.0),
       );
     });
 
     test('completely different', () {
-       // 'abc' vs 'def' distance 3. max len 3. score 0.0
+      // 'abc' vs 'def' distance 3. max len 3. score 0.0
       expect(
         'abc'.similarityTo('def', algorithm: SimilarityAlgorithm.levenshtein),
         equals(0.0),
@@ -35,9 +37,12 @@ void main() {
     });
 
     test('empty string', () {
-      expect(''.similarityTo('a', algorithm: SimilarityAlgorithm.levenshtein), equals(0.0));
-      expect('a'.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein), equals(0.0));
-      expect(''.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein), equals(1.0));
+      expect(''.similarityTo('a', algorithm: SimilarityAlgorithm.levenshtein),
+          equals(0.0));
+      expect('a'.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein),
+          equals(0.0));
+      expect(''.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein),
+          equals(1.0));
     });
   });
 }

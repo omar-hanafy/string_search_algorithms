@@ -1,7 +1,7 @@
-import '../../common/exceptions.dart';
-import '../models/compiled_pattern.dart';
-import '../models/search_match.dart';
-import 'search_algorithm.dart';
+import 'package:string_search_algorithms/src/common/exceptions.dart';
+import 'package:string_search_algorithms/src/search/models/compiled_pattern.dart';
+import 'package:string_search_algorithms/src/search/models/search_match.dart';
+import 'package:string_search_algorithms/src/search/algorithms/search_algorithm.dart';
 
 /// Compiles [pattern] into a Boyer–Moore compiled pattern.
 ///
@@ -150,7 +150,8 @@ class _BoyerMooreCompiledPattern implements CompiledPattern {
 
   /// Builds Boyer–Moore good-suffix shift table.
   ///
-  /// `shift[j]` is the shift distance when mismatch occurs at pattern index `j`.
+  /// `shift[j]` is the shift distance when mismatch occurs at pattern index
+  /// `j`.
   static List<int> _buildGoodSuffixShift(List<int> pat) {
     final m = pat.length;
     if (m == 1) return <int>[1];

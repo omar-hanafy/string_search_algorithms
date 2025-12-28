@@ -22,7 +22,7 @@ void main() {
   // 3. Compiled Pattern (Best for repeated searches)
   // Compiling 'the' using KMP
   final pattern = StringSearch.compile('the', algorithm: SearchAlgorithm.kmp);
-  
+
   // Note: Searching is case-sensitive by default unless you normalize manually
   final allMatches = pattern.findAllIn(text.toLowerCase());
 

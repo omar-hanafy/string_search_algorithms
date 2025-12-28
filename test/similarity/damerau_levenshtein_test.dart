@@ -6,7 +6,8 @@ void main() {
     test('transposition', () {
       // Transposition 'ba' -> 'ab' cost 1
       expect(
-        StringSimilarity.compare('ba', 'ab', algorithm: SimilarityAlgorithm.damerauLevenshtein),
+        StringSimilarity.compare('ba', 'ab',
+            algorithm: SimilarityAlgorithm.damerauLevenshtein),
         equals(0.5), // 1 distance / 2 length = 0.5 similarity
       );
     });
@@ -14,7 +15,8 @@ void main() {
     test('standard edit', () {
       // 'kitten' -> 'sitting' distance 3
       expect(
-        StringSimilarity.compare('kitten', 'sitting', algorithm: SimilarityAlgorithm.damerauLevenshtein),
+        StringSimilarity.compare('kitten', 'sitting',
+            algorithm: SimilarityAlgorithm.damerauLevenshtein),
         closeTo(0.57, 0.01),
       );
     });

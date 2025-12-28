@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
-import '../context.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
+/// Implements the Optimal String Alignment (restricted Damerau-Levenshtein)
+/// metric.
 class OsaMetric implements SimilarityMetric {
   @override
   String get id => 'osa';
@@ -54,10 +56,7 @@ int _osaDistance(String s, String t) {
       );
 
       // Adjacent transposition (OSA)
-      if (i > 1 &&
-          j > 1 &&
-          a[i - 1] == b[j - 2] &&
-          a[i - 2] == b[j - 1]) {
+      if (i > 1 && j > 1 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1]) {
         best = math.min(best, prevPrev[j - 2] + 1);
       }
 

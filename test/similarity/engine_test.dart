@@ -34,7 +34,5 @@ void main() {
       expect(engine.compare('abc', 'abd'), greaterThan(0));
       expect(engine.compare('abc', 'abd'), greaterThan(0)); // Should hit cache
     });
-
-
   });
 }

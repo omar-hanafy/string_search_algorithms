@@ -12,8 +12,17 @@ void main() {
   print('Jaro-Winkler("Dwayne", "Duane"): $score');
 
   // 2. Extension methods
-  print('Dice Coefficient("night", "nacht"): ${'night'.similarityTo('nacht', algorithm: SimilarityAlgorithm.diceCoefficient)}');
-  print('Levenshtein("kitten", "sitting"): ${'kitten'.similarityTo('sitting', algorithm: SimilarityAlgorithm.levenshtein)}');
+  final diceScore = 'night'.similarityTo(
+    'nacht',
+    algorithm: SimilarityAlgorithm.diceCoefficient,
+  );
+  print('Dice Coefficient("night", "nacht"): $diceScore');
+
+  final levScore = 'kitten'.similarityTo(
+    'sitting',
+    algorithm: SimilarityAlgorithm.levenshtein,
+  );
+  print('Levenshtein("kitten", "sitting"): $levScore');
 
   // 3. Custom Engine with options
   final engine = StringSimilarityEngine(
@@ -37,7 +46,7 @@ void main() {
   // 4. Fuzzy Matching from a list
   final candidates = ['apple', 'banana', 'orange', 'grape', 'apricot'];
   print('\nSearching for "appel" in candidates: $candidates');
-  
+
   final matches = engine.findMatches(
     'appel',
     candidates,

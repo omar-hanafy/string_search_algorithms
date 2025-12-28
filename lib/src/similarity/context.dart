@@ -1,11 +1,16 @@
-import '../common/lru_cache.dart';
-import 'options/similarity_options.dart';
-import 'processing/tokenizer.dart';
+import 'package:string_search_algorithms/src/common/lru_cache.dart';
+import 'package:string_search_algorithms/src/similarity/options/similarity_options.dart';
+import 'package:string_search_algorithms/src/similarity/processing/tokenizer.dart';
 
+/// Key for caching n-grams (string + n).
 class NgramCacheKey {
+  /// Creates a key for [text] and size [n].
   const NgramCacheKey(this.text, this.n);
 
+  /// The text source.
   final String text;
+
+  /// The n-gram size.
   final int n;
 
   @override
@@ -18,19 +23,31 @@ class NgramCacheKey {
   int get hashCode => Object.hash(text, n);
 }
 
+/// Holds references to the various caches used by the engine.
 class SimilarityCaches {
+  /// Creates a [SimilarityCaches] container.
   SimilarityCaches({
     this.normalized,
     this.bigrams,
     this.ngrams,
   });
 
+  /// Cache for normalized strings.
   final LruCache<String, String>? normalized;
+
+  /// Cache for bigram frequency maps.
   final LruCache<String, Map<String, int>>? bigrams;
+
+  /// Cache for n-gram lists.
   final LruCache<NgramCacheKey, List<String>>? ngrams;
 }
 
+/// Context passed to [SimilarityMetric.score].
+///
+/// Contains the input strings (original and normalized), global options,
+/// and access to shared caches/tokenizer.
 class SimilarityContext {
+  /// Creates a [SimilarityContext].
   SimilarityContext({
     required this.originalA,
     required this.originalB,
@@ -41,15 +58,25 @@ class SimilarityContext {
     required this.tokenizer,
   });
 
+  /// The first original input string.
   final String originalA;
+
+  /// The second original input string.
   final String originalB;
 
+  /// The first input string after normalization.
   final String normalizedA;
+
+  /// The second input string after normalization.
   final String normalizedB;
 
+  /// Global similarity options.
   final SimilarityOptions options;
+
+  /// Shared caches.
   final SimilarityCaches caches;
 
+  /// Shared tokenizer instance.
   final StringTokenizer tokenizer;
 
   /// Returns whitespace/custom-tokenizer tokens (optionally stemmed).
@@ -61,7 +88,8 @@ class SimilarityContext {
     );
   }
 
-  /// Returns bigram frequency counts for a normalized string (cached if enabled).
+  /// Returns bigram frequency counts for a normalized string (cached if
+  /// enabled).
   Map<String, int> bigramCounts(String normalized) {
     if (normalized.length < 2) return const <String, int>{};
 
@@ -77,7 +105,8 @@ class SimilarityContext {
     final counts = <String, int>{};
     final codeUnits = normalized.codeUnits;
     for (var i = 0; i < codeUnits.length - 1; i++) {
-      final bigram = String.fromCharCodes(<int>[codeUnits[i], codeUnits[i + 1]]);
+      final bigram =
+          String.fromCharCodes(<int>[codeUnits[i], codeUnits[i + 1]]);
       counts[bigram] = (counts[bigram] ?? 0) + 1;
     }
 

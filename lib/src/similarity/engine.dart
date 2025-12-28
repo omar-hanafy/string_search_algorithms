@@ -1,22 +1,31 @@
-import '../common/exceptions.dart';
-import '../common/lru_cache.dart';
-import '../common/typedefs.dart';
-import 'context.dart';
-import 'metrics/registry.dart';
-import 'metrics/similarity_metric.dart';
-import 'models/fuzzy_match.dart';
-import 'models/similarity_result.dart';
-import 'options/similarity_options.dart';
-import 'processing/normalizer.dart';
-import 'processing/tokenizer.dart';
+import 'package:string_search_algorithms/src/common/exceptions.dart';
+import 'package:string_search_algorithms/src/common/lru_cache.dart';
+import 'package:string_search_algorithms/src/common/typedefs.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/registry.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/models/fuzzy_match.dart';
+import 'package:string_search_algorithms/src/similarity/models/similarity_result.dart';
+import 'package:string_search_algorithms/src/similarity/options/similarity_options.dart';
+import 'package:string_search_algorithms/src/similarity/processing/normalizer.dart';
+import 'package:string_search_algorithms/src/similarity/processing/tokenizer.dart';
 
+/// Engine for performing string similarity comparisons and fuzzy matching.
+///
+/// Inputs are normalized according to [SimilarityOptions.normalization] before
+/// scoring. Caches are per-engine and controlled by
+/// [SimilarityOptions.cache].
 class StringSimilarityEngine {
+  /// Creates a [StringSimilarityEngine] with the given [options].
+  ///
+  /// If [registry] is not provided, uses the built-in algorithms.
   StringSimilarityEngine({
     this.options = const SimilarityOptions(),
     SimilarityMetricRegistry? registry,
-  }) : _registry = registry ?? SimilarityMetricRegistry.builtIn(),
-       _tokenizer = const StringTokenizer() {
-    // Validate algorithm options at runtime (asserts can be disabled in release).
+  })  : _registry = registry ?? SimilarityMetricRegistry.builtIn(),
+        _tokenizer = const StringTokenizer() {
+    // Validate algorithm options at runtime (asserts can be disabled in
+    // release).
     options.algorithms.validate();
 
     // Initialize per-instance caches (or disable them).
@@ -48,6 +57,7 @@ class StringSimilarityEngine {
     );
   }
 
+  /// The configuration options for this engine.
   final SimilarityOptions options;
 
   final SimilarityMetricRegistry _registry;
@@ -60,6 +70,16 @@ class StringSimilarityEngine {
   late final SimilarityCaches _caches;
   late final StringNormalizer _normalizer;
 
+  /// Calculates the similarity score (0.0 to 1.0) between [a] and [b].
+  ///
+  /// Uses [algorithm] (default: Jaro-Winkler) unless a custom [metric] is
+  /// provided.
+  ///
+  /// Example:
+  /// ```dart
+  /// final engine = StringSimilarityEngine();
+  /// engine.compare('kitten', 'sitting'); // 0.746...
+  /// ```
   SimilarityScore compare(
     String a,
     String b, {
@@ -79,6 +99,14 @@ class StringSimilarityEngine {
     );
   }
 
+  /// Calculates similarity with detailed metadata (execution time,
+  /// normalization, etc.).
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = engine.compareWithDetails('kitten', 'sitting');
+  /// print(result.score);
+  /// ```
   SimilarityResult compareWithDetails(
     String a,
     String b, {
@@ -111,6 +139,12 @@ class StringSimilarityEngine {
     );
   }
 
+  /// Finds matches for [query] in [candidates] with a score >= [minScore].
+  ///
+  /// Example:
+  /// ```dart
+  /// engine.findMatches('apple', ['aple', 'pear', 'app'], minScore: 0.8);
+  /// ```
   List<FuzzyMatch<String>> findMatches(
     String query,
     Iterable<String> candidates, {
@@ -161,6 +195,12 @@ class StringSimilarityEngine {
     return results;
   }
 
+  /// Finds the single best match for [query] in [candidates].
+  ///
+  /// Example:
+  /// ```dart
+  /// engine.findBestMatch('apple', ['aple', 'pear']); // FuzzyMatch('aple')
+  /// ```
   FuzzyMatch<String>? findBestMatch(
     String query,
     Iterable<String> candidates, {
@@ -207,6 +247,13 @@ class StringSimilarityEngine {
     );
   }
 
+  /// Ranks [candidates] by similarity to [query].
+  ///
+  /// Example:
+  /// ```dart
+  /// engine.rankByRelevance('apple', ['pear', 'aple', 'app']);
+  /// // [FuzzyMatch('aple'), FuzzyMatch('app'), FuzzyMatch('pear')]
+  /// ```
   List<FuzzyMatch<String>> rankByRelevance(
     String query,
     Iterable<String> candidates, {

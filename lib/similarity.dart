@@ -1,4 +1,8 @@
-library string_search_algorithms_similarity;
+/// String similarity and fuzzy matching APIs.
+///
+/// Use [StringSimilarity] for stateless helpers or [StringSimilarityEngine]
+/// when you need configuration, caching, or detailed results.
+library;
 
 export 'src/common/typedefs.dart';
 export 'src/common/exceptions.dart';

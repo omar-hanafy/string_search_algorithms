@@ -9,16 +9,18 @@ void main() {
       // Intersection: 3. Min size: 3.
       // Overlap: 3/3 = 1.0.
       expect(
-        StringSimilarity.compare('test', 'testing', algorithm: SimilarityAlgorithm.overlapCoefficient),
+        StringSimilarity.compare('test', 'testing',
+            algorithm: SimilarityAlgorithm.overlapCoefficient),
         equals(1.0),
       );
     });
-    
+
     test('disjoint', () {
-        expect(
-            StringSimilarity.compare('abc', 'xyz', algorithm: SimilarityAlgorithm.overlapCoefficient),
-            equals(0.0),
-        );
+      expect(
+        StringSimilarity.compare('abc', 'xyz',
+            algorithm: SimilarityAlgorithm.overlapCoefficient),
+        equals(0.0),
+      );
     });
   });
 }

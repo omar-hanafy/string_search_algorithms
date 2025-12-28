@@ -1,4 +1,8 @@
-library string_search_algorithms_search;
+/// Substring search APIs and algorithms.
+///
+/// Use [StringSearch] for stateless convenience helpers or
+/// [StringSearchEngine] when you want instance-based control and reuse.
+library;
 
 export 'src/common/exceptions.dart';
 

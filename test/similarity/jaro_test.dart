@@ -19,7 +19,8 @@ void main() {
     });
 
     test('identical strings', () {
-      expect('abc'.similarityTo('abc', algorithm: SimilarityAlgorithm.jaro), equals(1.0));
+      expect('abc'.similarityTo('abc', algorithm: SimilarityAlgorithm.jaro),
+          equals(1.0));
     });
   });
 }

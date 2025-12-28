@@ -1,15 +1,22 @@
 # Changelog
 
-## 0.1.0
+All notable changes to this package will be documented in this file.
 
-- **Initial Release** with production-grade architecture.
-- **Modules**: Split into `similarity` and `search` libraries.
-- **Engine**: Added `StringSimilarityEngine` and `StringSearchEngine` for instance-based configuration and caching.
-- **Similarity**:
-    - Added algorithms: Dice Coefficient, Levenshtein, Jaro, Jaro-Winkler, Cosine, Jaccard, N-gram, Hamming, LCS, Soundex, Metaphone.
-    - Added `SimilarityOptions` for detailed control over normalization and caching.
-    - Added `findMatches` and `findBestMatch` for fuzzy searching.
-- **Search**:
-    - Added algorithms: KMP, Boyer-Moore, Rabin-Karp, Standard.
-    - Added `CompiledPattern` for optimized repeated searching.
-- **Extensions**: Added ergonomic extension methods on `String`.
+## 1.0.0
+
+### Added
+
+- Initial stable release of the similarity and search libraries.
+- Instance-based engines with configurable normalization and caching.
+- Similarity algorithms: Dice, Levenshtein, Damerau-Levenshtein, OSA, Jaro,
+  Jaro-Winkler, Cosine, Jaccard, Overlap, Tversky, N-gram, Hamming, LCS,
+  Soundex, Metaphone.
+- Substring search algorithms: KMP, Boyer-Moore, Rabin-Karp.
+- CompiledPattern for repeated substring searches.
+- Convenience String extension methods for similarity and search.
+- Benchmark scripts under `benchmark/`.
+
+### Documentation
+
+- Complete API documentation for all public members.
+- Updated README with examples and configuration guidance.

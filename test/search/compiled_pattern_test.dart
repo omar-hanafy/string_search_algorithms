@@ -12,11 +12,12 @@ void main() {
       expect(compiled.indexOfIn(text), equals(16));
       expect(compiled.containsIn(text), isTrue);
     });
-    
+
     test('Reuse compiled', () {
-        final compiled = StringSearch.compile('abc', algorithm: SearchAlgorithm.boyerMoore);
-        expect(compiled.containsIn('xyzabc'), isTrue);
-        expect(compiled.containsIn('123'), isFalse);
+      final compiled =
+          StringSearch.compile('abc', algorithm: SearchAlgorithm.boyerMoore);
+      expect(compiled.containsIn('xyzabc'), isTrue);
+      expect(compiled.containsIn('123'), isFalse);
     });
   });
 }

@@ -1,11 +1,16 @@
-import '../../common/typedefs.dart';
-import '../facade.dart';
-import '../models/fuzzy_match.dart';
-import '../models/similarity_result.dart';
+import 'package:string_search_algorithms/src/common/typedefs.dart';
+import 'package:string_search_algorithms/src/similarity/facade.dart';
+import 'package:string_search_algorithms/src/similarity/models/fuzzy_match.dart';
+import 'package:string_search_algorithms/src/similarity/models/similarity_result.dart';
 
 /// Convenience extensions for using [StringSimilarity] on String instances.
 extension StringSimilarityExtensions on String {
   /// Similarity score between this string and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// 'kitten'.similarityTo('sitting'); // 0.746...
+  /// ```
   SimilarityScore similarityTo(
     String other, {
     SimilarityAlgorithm algorithm = SimilarityAlgorithm.jaroWinkler,
@@ -18,6 +23,13 @@ extension StringSimilarityExtensions on String {
   }
 
   /// Similarity comparison with detailed output.
+  ///
+  /// Example:
+  /// ```dart
+  /// final result = 'kitten'.similarityDetails('sitting');
+  /// print(result.score); // 0.746...
+  /// print(result.normalizedA); // kitten
+  /// ```
   SimilarityResult similarityDetails(
     String other, {
     SimilarityAlgorithm algorithm = SimilarityAlgorithm.jaroWinkler,
@@ -30,6 +42,11 @@ extension StringSimilarityExtensions on String {
   }
 
   /// Finds candidates with similarity >= [minScore].
+  ///
+  /// Example:
+  /// ```dart
+  /// 'apple'.fuzzyMatchesIn(['aple', 'pear', 'app'], minScore: 0.8);
+  /// ```
   List<FuzzyMatch<String>> fuzzyMatchesIn(
     Iterable<String> candidates, {
     SimilarityAlgorithm algorithm = SimilarityAlgorithm.jaroWinkler,
@@ -50,6 +67,11 @@ extension StringSimilarityExtensions on String {
   }
 
   /// Finds the best fuzzy match (or null if none meets [minScore]).
+  ///
+  /// Example:
+  /// ```dart
+  /// 'apple'.bestFuzzyMatchIn(['aple', 'pear']); // FuzzyMatch(value: 'aple', ...)
+  /// ```
   FuzzyMatch<String>? bestFuzzyMatchIn(
     Iterable<String> candidates, {
     SimilarityAlgorithm algorithm = SimilarityAlgorithm.jaroWinkler,
@@ -65,7 +87,14 @@ extension StringSimilarityExtensions on String {
     );
   }
 
-  /// Ranks candidates by similarity (descending), optionally filtered by [minScore].
+  /// Ranks candidates by similarity (descending), optionally filtered by
+  /// [minScore].
+  ///
+  /// Example:
+  /// ```dart
+  /// 'apple'.rankFuzzyMatchesIn(['pear', 'aple', 'app']);
+  /// // [FuzzyMatch('aple'), FuzzyMatch('app'), FuzzyMatch('pear')]
+  /// ```
   List<FuzzyMatch<String>> rankFuzzyMatchesIn(
     Iterable<String> candidates, {
     SimilarityAlgorithm algorithm = SimilarityAlgorithm.jaroWinkler,

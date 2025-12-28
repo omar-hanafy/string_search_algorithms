@@ -1,9 +1,12 @@
-import '../models/compiled_pattern.dart';
+import 'package:string_search_algorithms/src/search/models/compiled_pattern.dart';
 
-import '../../common/exceptions.dart';
-import '../models/search_match.dart';
-import 'search_algorithm.dart';
+import 'package:string_search_algorithms/src/common/exceptions.dart';
+import 'package:string_search_algorithms/src/search/models/search_match.dart';
+import 'package:string_search_algorithms/src/search/algorithms/search_algorithm.dart';
 
+/// Compiles [pattern] into a KMP compiled pattern.
+///
+/// Throws [InvalidInputException] if [pattern] is empty.
 CompiledPattern compileKmp(String pattern) {
   if (pattern.isEmpty) {
     throw InvalidInputException(

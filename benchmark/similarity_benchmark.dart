@@ -28,21 +28,27 @@ class SimilarityBenchmark {
   ];
 
   void run() {
-    _measure('Dice Coefficient (Short)', SimilarityAlgorithm.diceCoefficient, shortPairs, 10000);
-    _measure('Dice Coefficient (Long)', SimilarityAlgorithm.diceCoefficient, longPairs, 10000);
-    
-    print('');
-
-    _measure('Levenshtein (Short)', SimilarityAlgorithm.levenshtein, shortPairs, 10000);
-    _measure('Levenshtein (Long)', SimilarityAlgorithm.levenshtein, longPairs, 1000); // Expensive
+    _measure('Dice Coefficient (Short)', SimilarityAlgorithm.diceCoefficient,
+        shortPairs, 10000);
+    _measure('Dice Coefficient (Long)', SimilarityAlgorithm.diceCoefficient,
+        longPairs, 10000);
 
     print('');
 
-    _measure('Jaro-Winkler (Short)', SimilarityAlgorithm.jaroWinkler, shortPairs, 10000);
-    _measure('Jaro-Winkler (Long)', SimilarityAlgorithm.jaroWinkler, longPairs, 10000);
+    _measure('Levenshtein (Short)', SimilarityAlgorithm.levenshtein, shortPairs,
+        10000);
+    _measure('Levenshtein (Long)', SimilarityAlgorithm.levenshtein, longPairs,
+        1000); // Expensive
 
     print('');
-    
+
+    _measure('Jaro-Winkler (Short)', SimilarityAlgorithm.jaroWinkler,
+        shortPairs, 10000);
+    _measure('Jaro-Winkler (Long)', SimilarityAlgorithm.jaroWinkler, longPairs,
+        10000);
+
+    print('');
+
     _measure('Cosine (Short)', SimilarityAlgorithm.cosine, shortPairs, 10000);
     _measure('Cosine (Long)', SimilarityAlgorithm.cosine, longPairs, 10000);
   }
@@ -59,17 +65,17 @@ class SimilarityBenchmark {
     }
 
     final stopwatch = Stopwatch()..start();
-    
+
     for (var i = 0; i < iterations; i++) {
       for (final pair in pairs) {
         StringSimilarity.compare(pair[0], pair[1], algorithm: algorithm);
       }
     }
-    
+
     stopwatch.stop();
     final totalMicroseconds = stopwatch.elapsedMicroseconds;
     final avgMicroseconds = totalMicroseconds / (iterations * pairs.length);
-    
+
     print('$name: ${avgMicroseconds.toStringAsFixed(2)} µs/op');
   }
 }

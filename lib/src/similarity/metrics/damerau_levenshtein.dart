@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
-import '../context.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
+/// Implements the Damerau-Levenshtein distance (true distance with
+/// transpositions).
 class DamerauLevenshteinMetric implements SimilarityMetric {
   @override
   String get id => 'damerau_levenshtein';
@@ -87,11 +89,9 @@ int _damerauLevenshteinDistance(String s, String t) {
       final deletion = d[i][j + 1] + 1;
 
       // True Damerau-Levenshtein transposition term.
-      final transposition =
-          d[i1][j1] + (i - i1 - 1) + 1 + (j - j1 - 1);
+      final transposition = d[i1][j1] + (i - i1 - 1) + 1 + (j - j1 - 1);
 
-      d[i + 1][j + 1] =
-          _min4(substitution, insertion, deletion, transposition);
+      d[i + 1][j + 1] = _min4(substitution, insertion, deletion, transposition);
     }
 
     lastRow[ai] = i;

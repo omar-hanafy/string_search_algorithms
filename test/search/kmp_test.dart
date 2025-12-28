@@ -23,9 +23,10 @@ void main() {
       expect(matches[1].index, equals(4));
       expect(matches[2].index, equals(8));
     });
-    
+
     test('not found', () {
-        expect(StringSearch.indexOf(text, 'cat', algorithm: SearchAlgorithm.kmp), equals(-1));
+      expect(StringSearch.indexOf(text, 'cat', algorithm: SearchAlgorithm.kmp),
+          equals(-1));
     });
   });
 }

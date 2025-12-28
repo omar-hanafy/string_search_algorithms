@@ -1,9 +1,10 @@
-import '../context.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
 /// Soundex phonetic similarity metric.
 ///
-/// This metric encodes each normalized input string to a 4-character Soundex code,
+/// This metric encodes each normalized input string to a 4-character Soundex
+/// code,
 /// then returns:
 /// - 1.0 if both codes match
 /// - 0.0 otherwise
@@ -82,7 +83,8 @@ String _soundexCode(String input) {
   for (var i = 1; i < letters.length && buffer.length < 4; i++) {
     final ch = letters[i].toUpperCase();
 
-    // H and W are treated as "silent" for our purposes; they do not reset prevCode.
+    // H and W are treated as "silent" for our purposes; they do not reset
+    // prevCode.
     if (ch == 'H' || ch == 'W') continue;
 
     // Vowels and Y reset the duplicate suppression boundary.

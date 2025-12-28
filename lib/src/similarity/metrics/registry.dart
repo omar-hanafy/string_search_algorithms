@@ -1,31 +1,36 @@
 // lib/src/similarity/metrics/registry.dart
-import '../../common/exceptions.dart';
-import '../../common/typedefs.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/common/exceptions.dart';
+import 'package:string_search_algorithms/src/common/typedefs.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
 // Built-in metrics
-import 'cosine.dart';
-import 'damerau_levenshtein.dart';
-import 'dice_coefficient.dart';
-import 'hamming.dart';
-import 'jaccard.dart';
-import 'jaro.dart';
-import 'jaro_winkler.dart';
-import 'lcs.dart';
-import 'levenshtein.dart';
-import 'metaphone.dart';
-import 'ngram.dart';
-import 'osa.dart';
-import 'overlap_coefficient.dart';
-import 'soundex.dart';
-import 'tversky.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/cosine.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/damerau_levenshtein.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/dice_coefficient.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/hamming.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/jaccard.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/jaro.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/jaro_winkler.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/lcs.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/levenshtein.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/metaphone.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/ngram.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/osa.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/overlap_coefficient.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/soundex.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/tversky.dart';
 
+/// Registry for mapping [SimilarityAlgorithm] enums to [SimilarityMetric]
+/// implementations.
 class SimilarityMetricRegistry {
-  SimilarityMetricRegistry([Map<SimilarityAlgorithm, SimilarityMetric>? metrics])
+  /// Creates a registry with an optional initial map of [metrics].
+  SimilarityMetricRegistry(
+      [Map<SimilarityAlgorithm, SimilarityMetric>? metrics])
       : _metrics = Map<SimilarityAlgorithm, SimilarityMetric>.from(
           metrics ?? const <SimilarityAlgorithm, SimilarityMetric>{},
         );
 
+  /// Creates a registry populated with all built-in algorithms.
   factory SimilarityMetricRegistry.builtIn() {
     return SimilarityMetricRegistry(<SimilarityAlgorithm, SimilarityMetric>{
       SimilarityAlgorithm.diceCoefficient: DiceCoefficientMetric(),
@@ -48,6 +53,9 @@ class SimilarityMetricRegistry {
 
   final Map<SimilarityAlgorithm, SimilarityMetric> _metrics;
 
+  /// Returns the [SimilarityMetric] for the given [algorithm].
+  ///
+  /// Throws [AlgorithmNotSupportedException] if not registered.
   SimilarityMetric metricFor(SimilarityAlgorithm algorithm) {
     final metric = _metrics[algorithm];
     if (metric == null) {
@@ -59,11 +67,15 @@ class SimilarityMetricRegistry {
     return metric;
   }
 
+  /// Registers a [metric] for the given [algorithm].
   void register(SimilarityAlgorithm algorithm, SimilarityMetric metric) {
     _metrics[algorithm] = metric;
   }
 
-  bool supports(SimilarityAlgorithm algorithm) => _metrics.containsKey(algorithm);
+  /// Returns true if [algorithm] is registered.
+  bool supports(SimilarityAlgorithm algorithm) =>
+      _metrics.containsKey(algorithm);
 
+  /// Returns a list of all supported algorithms.
   Iterable<SimilarityAlgorithm> get supportedAlgorithms => _metrics.keys;
 }

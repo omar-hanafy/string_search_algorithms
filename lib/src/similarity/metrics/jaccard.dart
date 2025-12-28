@@ -1,6 +1,7 @@
-import '../context.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
+/// Implements the Jaccard Index (token-based).
 class JaccardMetric implements SimilarityMetric {
   @override
   String get id => 'jaccard';

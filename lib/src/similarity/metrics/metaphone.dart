@@ -1,5 +1,5 @@
-import '../context.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
 /// Metaphone phonetic similarity metric (lightweight approximation).
 ///
@@ -120,7 +120,8 @@ String _metaphoneCode(String input) {
 
       case 'H':
         // Emit H only when between vowels or at start before a vowel.
-        if ((i == 0 || vowels.contains(prevChar)) && vowels.contains(nextChar)) {
+        if ((i == 0 || vowels.contains(prevChar)) &&
+            vowels.contains(nextChar)) {
           result.write('H');
         }
         break;
@@ -149,7 +150,8 @@ String _metaphoneCode(String input) {
         if (nextChar == 'H') {
           result.write('X');
           i++; // skip H
-        } else if (nextChar == 'I' && (nextNextChar == 'O' || nextNextChar == 'A')) {
+        } else if (nextChar == 'I' &&
+            (nextNextChar == 'O' || nextNextChar == 'A')) {
           result.write('X');
         } else {
           result.write('S');

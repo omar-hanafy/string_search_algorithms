@@ -1,56 +1,69 @@
 # String Search Algorithms
 
-A production-grade Dart library for efficient string similarity comparisons and substring searching. 
+Production-grade Dart library for fast string similarity scoring and substring
+search. Pure Dart, null-safe, and optimized for repeated comparisons with
+instance-based engines and caching.
 
-This package provides a robust set of algorithms for:
-- **String Similarity**: Fuzzy matching, typo tolerance, and similarity scoring (Levenshtein, Jaro-Winkler, Cosine, etc.).
-- **Substring Search**: High-performance pattern finding (KMP, Boyer-Moore, Rabin-Karp).
+## Highlights
 
-Designed for performance and flexibility with instance-based engines, extensive caching, and configurable normalization.
+- Similarity metrics: Levenshtein, Jaro-Winkler, Cosine, Jaccard, and more.
+- Search algorithms: KMP, Boyer-Moore, Rabin-Karp, and a standard wrapper.
+- Instance-based engines with configurable normalization and caching.
+- Compiled patterns for efficient repeated substring searches.
+- Extension methods for ergonomic usage on String.
 
-## Features
+## Installation
 
-### 🧩 Similarity Algorithms
-- **Edit Distance**: Levenshtein, Damerau-Levenshtein, OSA, Hamming, Longest Common Subsequence (LCS).
-- **Phonetic**: Soundex, Metaphone.
-- **Token-based**: Cosine, Jaccard, Dice Coefficient, Overlap Coefficient, Tversky Index.
-- **Character-based**: Jaro, Jaro-Winkler, N-gram.
+Add this to your `pubspec.yaml`:
 
-### 🔍 Search Algorithms
-- **Knuth-Morris-Pratt (KMP)**: Optimized for avoiding redundant comparisons.
-- **Boyer-Moore**: Fast skipping using the Bad Character rule.
-- **Rabin-Karp**: Rolling hash approach.
-- **Standard**: Wrapper around Dart's native optimized search.
+```yaml
+dependencies:
+  string_search_algorithms: ^1.0.0
+```
 
-### 🚀 Key Capabilities
-- **Instance-based Engines**: Create isolated engines with their own configuration and caches.
-- **Caching**: Smart caching of normalized strings, bigrams, and tokens for high performance.
-- **Normalization**: Configurable case sensitivity, accent removal, and whitespace handling.
-- **Compiled Patterns**: Pre-compile search patterns for repeated use.
-
-## Usage
-
-### 1. String Similarity
-
-#### Simple Static Usage
-Use the `StringSimilarity` facade for quick comparisons using default settings.
+## Quick start
 
 ```dart
 import 'package:string_search_algorithms/string_search_algorithms.dart';
 
 void main() {
-  // Compare two strings
-  final score = StringSimilarity.compare('Dwayne', 'Duane', algorithm: SimilarityAlgorithm.jaroWinkler);
-  print('Similarity: $score'); // ~0.96
+  final score = StringSimilarity.compare(
+    'Dwayne',
+    'Duane',
+    algorithm: SimilarityAlgorithm.jaroWinkler,
+  );
+  print('Similarity: $score');
 
-  // Extension methods
-  print('night'.diceCoefficient('nacht')); // ~0.25
-  print('kitten'.levenshtein('sitting'));  // ~0.57 (normalized)
+  final index = StringSearch.indexOf(
+    'The quick brown fox jumps over the lazy dog',
+    'brown',
+    algorithm: SearchAlgorithm.boyerMoore,
+  );
+  print('Index: $index');
 }
 ```
 
-#### Advanced Usage (Custom Engine)
-For heavy workloads or custom configuration, create a `StringSimilarityEngine`.
+## Similarity
+
+### Static helpers
+
+```dart
+final score = StringSimilarity.compare(
+  'kitten',
+  'sitting',
+  algorithm: SimilarityAlgorithm.levenshtein,
+);
+
+final details = StringSimilarity.compareWithDetails(
+  'Dwayne',
+  'Duane',
+  algorithm: SimilarityAlgorithm.jaroWinkler,
+);
+```
+
+### Engine with options
+
+Use `StringSimilarityEngine` for per-instance configuration and caching.
 
 ```dart
 final engine = StringSimilarityEngine(
@@ -59,75 +72,103 @@ final engine = StringSimilarityEngine(
       toLowerCase: true,
       removeAccents: true,
       removeSpecialChars: true,
+      trimWhitespace: true,
     ),
-    cache: CacheOptions(enabled: true, capacity: 1000),
+    cache: CacheOptions(
+      enabled: true,
+      normalizedCapacity: 1000,
+      bigramCapacity: 1000,
+      ngramCapacity: 1000,
+    ),
+    algorithms: AlgorithmOptions(
+      ngramSize: 3,
+      tverskyAlpha: 0.5,
+      tverskyBeta: 0.5,
+      jaroWinklerPrefixScale: 0.1,
+      jaroWinklerBoostThreshold: 0.7,
+    ),
   ),
 );
 
-final score = engine.compare('Café!', 'cafe', algorithm: SimilarityAlgorithm.levenshteinDistance);
+final score = engine.compare(
+  'Cafe!',
+  'cafe',
+  algorithm: SimilarityAlgorithm.levenshtein,
+);
 ```
 
-#### Fuzzy Matching
-Find the best matches from a list of candidates.
+### Fuzzy matching
 
 ```dart
 final candidates = ['apple', 'banana', 'orange', 'grape'];
-final matches = StringSimilarity.findMatches('appel', candidates, minScore: 0.5);
+final matches = StringSimilarity.findMatches(
+  'appel',
+  candidates,
+  minScore: 0.5,
+);
 
 for (final match in matches) {
   print('${match.value}: ${match.score}');
 }
 ```
 
-### 2. Substring Search
+## Substring search
 
-#### Basic Search
+### Basic search
+
 ```dart
-import 'package:string_search_algorithms/string_search_algorithms.dart';
-
 final text = 'The quick brown fox jumps over the lazy dog';
-final index = StringSearch.indexOf(text, 'brown', algorithm: SearchAlgorithm.boyerMoore);
+final index = StringSearch.indexOf(
+  text,
+  'brown',
+  algorithm: SearchAlgorithm.boyerMoore,
+);
 ```
 
-#### Compiled Patterns
-Compile a pattern once and reuse it for searching multiple texts efficiently.
+### Compiled patterns
 
 ```dart
-final pattern = StringSearch.compile('fox', algorithm: SearchAlgorithm.kmp);
+final pattern = StringSearch.compile(
+  'fox',
+  algorithm: SearchAlgorithm.kmp,
+);
 
 if (pattern.containsIn(text)) {
   print('Found!');
 }
 
-final matches = pattern.findAllIn(text);
-matches.forEach((m) => print('Found at ${m.index}'));
+for (final match in pattern.findAllIn(text)) {
+  print('Found at ${match.index}');
+}
 ```
 
-## Algorithms Reference
+## Configuration
 
-| Algorithm | Type | Best For |
-|-----------|------|----------|
-| **Jaro-Winkler** | Similarity | Short strings, names, typos. |
-| **Levenshtein** | Distance | General purpose edit distance. |
-| **Damerau-Levenshtein** | Distance | Edit distance with transpositions (true distance). |
-| **OSA** | Distance | Edit distance with transpositions (restricted). |
-| **Dice Coefficient** | Similarity | Bigram similarity, robust to scrambled letters. |
-| **Cosine** | Token-based | Multi-word text, document similarity. |
-| **Tversky Index** | Token-based | Asymmetric set similarity (flexible Jaccard). |
-| **Soundex** | Phonetic | English names (phonetic grouping). |
-| **Metaphone** | Phonetic | More accurate English phonetic matching. |
-| **KMP** | Search | Linear time search, avoiding backtracking. |
-| **Boyer-Moore** | Search | Fast searching in long texts/large alphabets. |
+- `NormalizationOptions` controls trimming, case folding, accent removal, and
+  custom preprocessors/postprocessors.
+- `CacheOptions` sizes the normalized string, bigram, and n-gram caches.
+- `AlgorithmOptions` tunes Jaro-Winkler, N-gram size, and Tversky parameters.
 
-## Installation
+See the API docs for full option details.
 
-Add this to your `pubspec.yaml`:
+## Benchmarks
 
-```yaml
-dependencies:
-  string_search_algorithms: ^0.1.0
+Benchmark scripts live in `benchmark/`:
+
+```bash
+dart run benchmark/similarity_benchmark.dart
+dart run benchmark/search_benchmark.dart
 ```
+
+## API reference
+
+API docs will be available on pub.dev:
+https://pub.dev/documentation/string_search_algorithms/latest/
 
 ## Contributing
 
-Contributions are welcome! Please check the issues and feel free to submit Pull Requests.
+Contributions are welcome. Please read `CONTRIBUTING.md` and open a PR.
+
+## License
+
+Licensed under the MIT License. See `LICENSE`.

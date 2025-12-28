@@ -1,6 +1,7 @@
 /// Internal accent/diacritic map used by [removeDiacritics].
 ///
-/// This map is intentionally not exhaustive; it targets common Latin characters.
+/// This map is intentionally not exhaustive; it targets common Latin
+/// characters.
 /// Values are ASCII (or near-ASCII) replacements suitable for lightweight
 /// normalization without external dependencies.
 const Map<String, String> kAccentMap = <String, String>{

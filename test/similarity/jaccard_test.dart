@@ -13,7 +13,8 @@ void main() {
 
     test('extension method', () {
       expect(
-        'cat dog'.similarityTo('dog cat', algorithm: SimilarityAlgorithm.jaccard),
+        'cat dog'
+            .similarityTo('dog cat', algorithm: SimilarityAlgorithm.jaccard),
         equals(1.0),
       );
     });

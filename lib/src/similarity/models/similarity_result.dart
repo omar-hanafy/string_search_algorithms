@@ -1,6 +1,8 @@
-import '../../common/typedefs.dart';
+import 'package:string_search_algorithms/src/common/typedefs.dart';
 
+/// Detailed result of a similarity comparison.
 class SimilarityResult {
+  /// Creates a [SimilarityResult].
   const SimilarityResult({
     required this.score,
     required this.algorithm,
@@ -12,20 +14,31 @@ class SimilarityResult {
     this.elapsed,
   });
 
+  /// The similarity score.
   final SimilarityScore score;
+
+  /// The algorithm used.
   final SimilarityAlgorithm algorithm;
 
+  /// The first original input string.
   final String inputA;
+
+  /// The second original input string.
   final String inputB;
 
+  /// The normalized version of [inputA] (if normalization was enabled).
   final String? normalizedA;
+
+  /// The normalized version of [inputB] (if normalization was enabled).
   final String? normalizedB;
 
+  /// Additional algorithm-specific metadata (e.g., intermediate calculations).
   final Map<String, Object?> metadata;
 
   /// Elapsed time for the compareWithDetails call, if measured.
   final Duration? elapsed;
 
+  /// Converts the result to a JSON-compatible map.
   Map<String, Object?> toJson() {
     return <String, Object?>{
       'score': score,

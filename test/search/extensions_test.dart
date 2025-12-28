@@ -9,14 +9,14 @@ void main() {
     test('indexOfPattern', () {
       expect(text.indexOfPattern(pattern), equals(16));
     });
-    
+
     test('containsPattern', () {
       expect(text.containsPattern('lazy'), isTrue);
     });
-    
+
     test('findAllMatches', () {
-        final matches = 'aba aba'.findAllMatches('aba');
-        expect(matches.length, equals(2));
+      final matches = 'aba aba'.findAllMatches('aba');
+      expect(matches.length, equals(2));
     });
   });
 }

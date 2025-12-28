@@ -1,8 +1,9 @@
 import 'dart:math';
 
-import '../context.dart';
-import 'similarity_metric.dart';
+import 'package:string_search_algorithms/src/similarity/context.dart';
+import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
+/// Implements the Jaro-Winkler Similarity metric.
 class JaroWinklerMetric implements SimilarityMetric {
   @override
   String get id => 'jaro_winkler';

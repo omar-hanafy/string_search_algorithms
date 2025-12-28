@@ -1,6 +1,8 @@
-import '../../common/typedefs.dart';
+import 'package:string_search_algorithms/src/common/typedefs.dart';
 
+/// Represents a match result from a fuzzy search against a list of candidates.
 class FuzzyMatch<T> {
+  /// Creates a [FuzzyMatch].
   const FuzzyMatch({
     required this.value,
     required this.score,
@@ -8,8 +10,13 @@ class FuzzyMatch<T> {
     this.normalizedValue,
   });
 
+  /// The matched candidate value.
   final T value;
+
+  /// The similarity score (0.0 to 1.0).
   final SimilarityScore score;
+
+  /// The algorithm used to calculate the score.
   final SimilarityAlgorithm algorithm;
 
   /// Normalized candidate value, if requested by the caller.
@@ -35,4 +42,3 @@ class FuzzyMatch<T> {
   @override
   int get hashCode => Object.hash(value, score, algorithm, normalizedValue);
 }
-  

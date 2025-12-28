@@ -17,9 +17,12 @@ void main() {
         equals(1.0),
       );
     });
-    
+
     test('non-matching', () {
-        expect('Robert'.similarityTo('Alice', algorithm: SimilarityAlgorithm.soundex), equals(0.0));
+      expect(
+          'Robert'
+              .similarityTo('Alice', algorithm: SimilarityAlgorithm.soundex),
+          equals(0.0));
     });
   });
 }

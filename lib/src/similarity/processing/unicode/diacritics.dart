@@ -1,4 +1,4 @@
-import 'accent_map.dart';
+import 'package:string_search_algorithms/src/similarity/processing/unicode/accent_map.dart';
 
 /// Removes common diacritics/accents using [kAccentMap].
 String removeDiacritics(String input) {

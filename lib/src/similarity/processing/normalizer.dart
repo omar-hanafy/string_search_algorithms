@@ -1,13 +1,16 @@
-import '../../common/lru_cache.dart';
-import '../options/normalization_options.dart';
-import 'unicode/diacritics.dart';
+import 'package:string_search_algorithms/src/common/lru_cache.dart';
+import 'package:string_search_algorithms/src/similarity/options/normalization_options.dart';
+import 'package:string_search_algorithms/src/similarity/processing/unicode/diacritics.dart';
 
+/// Handles string normalization based on provided [NormalizationOptions].
 class StringNormalizer {
+  /// Creates a [StringNormalizer].
   StringNormalizer({
     required this.options,
     this.cache,
   });
 
+  /// The options to apply.
   final NormalizationOptions options;
 
   /// Cache for normalized strings. Key is the original input string.
@@ -19,6 +22,7 @@ class StringNormalizer {
   static final RegExp _specialCharsRegex =
       RegExp(r'[^\p{L}\p{N}\s]', unicode: true);
 
+  /// Normalizes [input] according to [options].
   String normalize(String input) {
     // If normalization is disabled, return unchanged.
     if (!options.enabled) return input;
