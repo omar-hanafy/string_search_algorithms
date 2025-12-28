@@ -3,11 +3,11 @@ name: Publish
 on:
   push:
     tags:
-      - 'doubly_linked_list-v*'
+      - 'string_search_algorithms-v*'
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to publish (e.g., doubly_linked_list-v1.2.3)'
+        description: 'Tag to publish (e.g., string_search_algorithms-v1.2.3)'
         required: true
         type: string
 
