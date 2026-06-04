@@ -4,6 +4,7 @@ import 'package:string_search_algorithms/src/common/typedefs.dart';
 import 'package:string_search_algorithms/src/similarity/metrics/similarity_metric.dart';
 
 // Built-in metrics
+import 'package:string_search_algorithms/src/similarity/metrics/composite.dart';
 import 'package:string_search_algorithms/src/similarity/metrics/cosine.dart';
 import 'package:string_search_algorithms/src/similarity/metrics/damerau_levenshtein.dart';
 import 'package:string_search_algorithms/src/similarity/metrics/dice_coefficient.dart';
@@ -48,6 +49,7 @@ class SimilarityMetricRegistry {
       SimilarityAlgorithm.lcs: LcsMetric(),
       SimilarityAlgorithm.soundex: SoundexMetric(),
       SimilarityAlgorithm.metaphone: MetaphoneMetric(),
+      SimilarityAlgorithm.composite: CompositeMetric(),
     });
   }
 

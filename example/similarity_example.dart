@@ -57,4 +57,29 @@ void main() {
   for (final match in matches) {
     print('Found: ${match.value} (Score: ${match.score.toStringAsFixed(3)})');
   }
+
+  // 5. Composite ("smart") similarity: one robust score across mixed inputs.
+  print('\n--- Composite similarity ---');
+  for (final pair in [
+    ['John Smith', 'Smith John'], // word reordering
+    ['recieve', 'receive'], // typo
+    ['apple', 'apple pie'], // containment
+    ['apple', 'zebra'], // unrelated
+  ]) {
+    final score = StringSimilarity.compare(
+      pair[0],
+      pair[1],
+      algorithm: SimilarityAlgorithm.composite,
+    );
+    print('"${pair[0]}" vs "${pair[1]}": ${score.toStringAsFixed(3)}');
+  }
+
+  // Composite results are explainable via compareWithDetails.
+  final details = StringSimilarity.compareWithDetails(
+    'John Smith',
+    'Smith John',
+    algorithm: SimilarityAlgorithm.composite,
+  );
+  print('Dominant witness: ${details.metadata['dominant']}');
+  print('Witness scores: ${details.metadata['witnesses']}');
 }
