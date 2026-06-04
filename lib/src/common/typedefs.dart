@@ -59,4 +59,12 @@ enum SimilarityAlgorithm {
 
   /// Metaphone (phonetic).
   metaphone,
+
+  /// Composite similarity: a calibrated ensemble that combines several
+  /// complementary witness algorithms into one stable, comparable score.
+  ///
+  /// Unlike single metrics, this is robust across mixed inputs (typos, word
+  /// reordering, containment) and safe to use in ranking. Configure it via
+  /// [AlgorithmOptions.composite].
+  composite,
 }

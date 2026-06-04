@@ -6,6 +6,8 @@ null-safe, with configurable engines and caching for repeated comparisons.
 ## Highlights
 
 - Similarity metrics: Levenshtein, Jaro-Winkler, Cosine, Jaccard, and more.
+- Composite "smart" matching: a calibrated ensemble that stays robust across
+  typos, word reordering, and containment - and is safe to rank with.
 - Search algorithms: KMP, Boyer-Moore, Rabin-Karp, and a standard wrapper.
 - Instance-based engines with configurable normalization and caching.
 - Compiled patterns for efficient repeated substring searches.
@@ -111,6 +113,41 @@ for (final match in matches) {
 }
 ```
 
+### Composite (smart) similarity
+
+When you do not want to pick a single algorithm, use
+`SimilarityAlgorithm.composite`. It combines complementary witnesses
+(Jaro-Winkler, Dice, Cosine, Overlap) into one stable score that handles typos,
+word reordering, and containment at once. Unlike picking an algorithm per input,
+it produces comparable scores, so it is safe to use with `findMatches` and
+`rankByRelevance`.
+
+```dart
+StringSimilarity.compare(
+  'John Smith',
+  'Smith John',
+  algorithm: SimilarityAlgorithm.composite,
+); // high - word reordering handled
+```
+
+Token-based witnesses respect normalization, so enable
+`NormalizationOptions(removeSpecialChars: true)` when inputs carry punctuation
+(for example `'Smith, John'`).
+
+Each witness is calibrated against an empirical noise floor before combining, so
+unrelated inputs collapse toward 0. The defaults can be tuned via
+`CompositeOptions`, and `compareWithDetails` explains the result:
+
+```dart
+final result = StringSimilarity.compareWithDetails(
+  'John Smith',
+  'Smith John',
+  algorithm: SimilarityAlgorithm.composite,
+);
+print(result.metadata['witnesses']); // per-witness sub-scores
+print(result.metadata['dominant']);  // which witness drove the score
+```
+
 ## Substring search
 
 ### Basic search
@@ -147,6 +184,8 @@ for (final match in pattern.findAllIn(text)) {
   custom preprocessors/postprocessors.
 - `CacheOptions` sizes the normalized string, bigram, and n-gram caches.
 - `AlgorithmOptions` tunes Jaro-Winkler, N-gram size, and Tversky parameters.
+- `CompositeOptions` tunes the composite combiner, witness weights, and the
+  per-witness calibration floors.
 
 See the API docs for full option details.
 
@@ -157,6 +196,7 @@ Benchmark scripts live in `benchmark/`:
 ```bash
 dart run benchmark/similarity_benchmark.dart
 dart run benchmark/search_benchmark.dart
+dart run benchmark/composite_calibration.dart # re-derive composite floors
 ```
 
 ## API reference

@@ -117,7 +117,7 @@ class StringSimilarityEngine {
     final normalizedA = _normalizer.normalize(a);
     final normalizedB = _normalizer.normalize(b);
 
-    final score = _scoreWithNormalized(
+    final outcome = _scoreWithNormalizedDetailed(
       originalA: a,
       originalB: b,
       normalizedA: normalizedA,
@@ -128,13 +128,13 @@ class StringSimilarityEngine {
     sw.stop();
 
     return SimilarityResult(
-      score: score,
+      score: outcome.score,
       algorithm: algorithm,
       inputA: a,
       inputB: b,
       normalizedA: normalizedA,
       normalizedB: normalizedB,
-      metadata: const {},
+      metadata: outcome.metadata,
       elapsed: sw.elapsed,
     );
   }
@@ -301,6 +301,55 @@ class StringSimilarityEngine {
 
     final raw = effectiveMetric.score(ctx);
     return _sanitizeScore(raw);
+  }
+
+  /// Like [_scoreWithNormalized] but also returns explanation metadata when the
+  /// resolved metric implements [ExplainableMetric]. Used by
+  /// [compareWithDetails]; kept separate so the hot scoring paths stay lean.
+  ({SimilarityScore score, Map<String, Object?> metadata})
+      _scoreWithNormalizedDetailed({
+    required String originalA,
+    required String originalB,
+    required String normalizedA,
+    required String normalizedB,
+    required SimilarityAlgorithm algorithm,
+  }) {
+    const emptyMetadata = <String, Object?>{};
+
+    if (normalizedA.isEmpty && normalizedB.isEmpty) {
+      return (score: 1.0, metadata: emptyMetadata);
+    }
+    if (normalizedA.isEmpty || normalizedB.isEmpty) {
+      return (score: 0.0, metadata: emptyMetadata);
+    }
+    if (normalizedA == normalizedB) {
+      return (score: 1.0, metadata: emptyMetadata);
+    }
+
+    final effectiveMetric = _registry.metricFor(algorithm);
+
+    final ctx = SimilarityContext(
+      originalA: originalA,
+      originalB: originalB,
+      normalizedA: normalizedA,
+      normalizedB: normalizedB,
+      options: options,
+      caches: _caches,
+      tokenizer: _tokenizer,
+    );
+
+    if (effectiveMetric is ExplainableMetric) {
+      final detailed = effectiveMetric.scoreWithDetails(ctx);
+      return (
+        score: _sanitizeScore(detailed.score),
+        metadata: detailed.details,
+      );
+    }
+
+    return (
+      score: _sanitizeScore(effectiveMetric.score(ctx)),
+      metadata: emptyMetadata,
+    );
   }
 
   SimilarityScore _sanitizeScore(double value) {
