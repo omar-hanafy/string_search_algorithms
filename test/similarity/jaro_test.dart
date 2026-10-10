@@ -5,8 +5,11 @@ void main() {
   group('Jaro', () {
     test('standard comparison', () {
       expect(
-        StringSimilarity.compare('MARTHA', 'MARHTA',
-            algorithm: SimilarityAlgorithm.jaro),
+        StringSimilarity.compare(
+          'MARTHA',
+          'MARHTA',
+          algorithm: SimilarityAlgorithm.jaro,
+        ),
         closeTo(0.94, 0.01),
       );
     });
@@ -19,8 +22,10 @@ void main() {
     });
 
     test('identical strings', () {
-      expect('abc'.similarityTo('abc', algorithm: SimilarityAlgorithm.jaro),
-          equals(1.0));
+      expect(
+        'abc'.similarityTo('abc', algorithm: SimilarityAlgorithm.jaro),
+        equals(1.0),
+      );
     });
   });
 }

@@ -17,8 +17,11 @@ void main() {
       // Common: 'es', 'st'. (2). Total: 3+3=6. 2*2/6 = 0.66.
       // If case insensitive (default): 1.0.
       expect(
-        engine.compare('Test', 'test',
-            algorithm: SimilarityAlgorithm.diceCoefficient),
+        engine.compare(
+          'Test',
+          'test',
+          algorithm: SimilarityAlgorithm.diceCoefficient,
+        ),
         lessThan(1.0),
       );
     });

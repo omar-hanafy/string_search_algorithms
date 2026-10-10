@@ -6,8 +6,11 @@ void main() {
     test('standard comparison', () {
       // ABCDGH vs AEDFHR. LCS is ADH (3). Max len 6. Score 0.5.
       expect(
-        StringSimilarity.compare('ABCDGH', 'AEDFHR',
-            algorithm: SimilarityAlgorithm.lcs),
+        StringSimilarity.compare(
+          'ABCDGH',
+          'AEDFHR',
+          algorithm: SimilarityAlgorithm.lcs,
+        ),
         equals(0.5),
       );
     });

@@ -5,16 +5,21 @@ void main() {
   group('Metaphone', () {
     test('standard comparison', () {
       expect(
-        StringSimilarity.compare('Philip', 'Phillip',
-            algorithm: SimilarityAlgorithm.metaphone),
+        StringSimilarity.compare(
+          'Philip',
+          'Phillip',
+          algorithm: SimilarityAlgorithm.metaphone,
+        ),
         equals(1.0),
       );
     });
 
     test('extension method', () {
       expect(
-        'Philip'
-            .similarityTo('Phillip', algorithm: SimilarityAlgorithm.metaphone),
+        'Philip'.similarityTo(
+          'Phillip',
+          algorithm: SimilarityAlgorithm.metaphone,
+        ),
         equals(1.0),
       );
     });

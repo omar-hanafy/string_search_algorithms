@@ -34,7 +34,8 @@ class BenchmarkResult {
   final int iterations;
 
   /// Returns a formatted string summary of the benchmark results.
-  String toReport() => '''
+  String toReport() =>
+      '''
 Algorithm: ${algorithm.name}
 Iterations: $iterations
 Average Time: ${averageTime.toStringAsFixed(2)}µs

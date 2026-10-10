@@ -25,11 +25,11 @@ import 'package:string_search_algorithms/src/similarity/metrics/tversky.dart';
 /// implementations.
 class SimilarityMetricRegistry {
   /// Creates a registry with an optional initial map of [metrics].
-  SimilarityMetricRegistry(
-      [Map<SimilarityAlgorithm, SimilarityMetric>? metrics])
-      : _metrics = Map<SimilarityAlgorithm, SimilarityMetric>.from(
-          metrics ?? const <SimilarityAlgorithm, SimilarityMetric>{},
-        );
+  SimilarityMetricRegistry([
+    Map<SimilarityAlgorithm, SimilarityMetric>? metrics,
+  ]) : _metrics = Map<SimilarityAlgorithm, SimilarityMetric>.from(
+         metrics ?? const <SimilarityAlgorithm, SimilarityMetric>{},
+       );
 
   /// Creates a registry populated with all built-in algorithms.
   factory SimilarityMetricRegistry.builtIn() {

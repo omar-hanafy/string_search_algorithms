@@ -18,7 +18,7 @@ class TverskyMetric implements SimilarityMetric {
     final setA = ctx.ngrams(a, n: ctx.options.algorithms.ngramSize).toSet();
     final setB = ctx.ngrams(b, n: ctx.options.algorithms.ngramSize).toSet();
 
-    if (setA.isEmpty && setB.isEmpty) return 1.0;
+    // Unequal short inputs have no grams and provide no matching evidence.
     if (setA.isEmpty || setB.isEmpty) return 0.0;
 
     final intersection = setA.intersection(setB).length.toDouble();

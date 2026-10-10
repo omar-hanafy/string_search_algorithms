@@ -18,10 +18,10 @@ CompiledPattern compileBoyerMoore(String pattern) {
 
 class _BoyerMooreCompiledPattern implements CompiledPattern {
   _BoyerMooreCompiledPattern(this.pattern)
-      : _pat = pattern.codeUnits,
-        _m = pattern.length,
-        _badCharLast = _buildBadCharLast(pattern.codeUnits),
-        _goodSuffixShift = _buildGoodSuffixShift(pattern.codeUnits);
+    : _pat = pattern.codeUnits,
+      _m = pattern.length,
+      _badCharLast = _buildBadCharLast(pattern.codeUnits),
+      _goodSuffixShift = _buildGoodSuffixShift(pattern.codeUnits);
 
   @override
   final String pattern;

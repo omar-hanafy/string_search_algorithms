@@ -7,15 +7,19 @@ void main() {
 
   group('Compiled Pattern', () {
     test('KMP compiled', () {
-      final compiled =
-          StringSearch.compile(pattern, algorithm: SearchAlgorithm.kmp);
+      final compiled = StringSearch.compile(
+        pattern,
+        algorithm: SearchAlgorithm.kmp,
+      );
       expect(compiled.indexOfIn(text), equals(16));
       expect(compiled.containsIn(text), isTrue);
     });
 
     test('Reuse compiled', () {
-      final compiled =
-          StringSearch.compile('abc', algorithm: SearchAlgorithm.boyerMoore);
+      final compiled = StringSearch.compile(
+        'abc',
+        algorithm: SearchAlgorithm.boyerMoore,
+      );
       expect(compiled.containsIn('xyzabc'), isTrue);
       expect(compiled.containsIn('123'), isFalse);
     });

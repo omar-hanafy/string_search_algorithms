@@ -8,16 +8,23 @@ void main() {
   group('Rabin-Karp', () {
     test('indexOf', () {
       expect(
-          StringSearch.indexOf(text, pattern,
-              algorithm: SearchAlgorithm.rabinKarp),
-          equals(16));
+        StringSearch.indexOf(
+          text,
+          pattern,
+          algorithm: SearchAlgorithm.rabinKarp,
+        ),
+        equals(16),
+      );
     });
 
     test('findAll', () {
       final t = 'aba aba aba';
       final p = 'aba';
-      final matches =
-          StringSearch.findAll(t, p, algorithm: SearchAlgorithm.rabinKarp);
+      final matches = StringSearch.findAll(
+        t,
+        p,
+        algorithm: SearchAlgorithm.rabinKarp,
+      );
       expect(matches.length, equals(3));
       expect(matches[0].index, equals(0));
       expect(matches[1].index, equals(4));

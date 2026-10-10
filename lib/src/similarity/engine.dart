@@ -22,8 +22,8 @@ class StringSimilarityEngine {
   StringSimilarityEngine({
     this.options = const SimilarityOptions(),
     SimilarityMetricRegistry? registry,
-  })  : _registry = registry ?? SimilarityMetricRegistry.builtIn(),
-        _tokenizer = const StringTokenizer() {
+  }) : _registry = registry ?? SimilarityMetricRegistry.builtIn(),
+       _tokenizer = const StringTokenizer() {
     // Validate algorithm options at runtime (asserts can be disabled in
     // release).
     options.algorithms.validate();
@@ -307,7 +307,7 @@ class StringSimilarityEngine {
   /// resolved metric implements [ExplainableMetric]. Used by
   /// [compareWithDetails]; kept separate so the hot scoring paths stay lean.
   ({SimilarityScore score, Map<String, Object?> metadata})
-      _scoreWithNormalizedDetailed({
+  _scoreWithNormalizedDetailed({
     required String originalA,
     required String originalB,
     required String normalizedA,
@@ -361,26 +361,23 @@ class StringSimilarityEngine {
 
   void _validateMinScore(double minScore) {
     if (minScore.isNaN || minScore.isInfinite) {
-      throw InvalidInputException(
-        'minScore must be a finite number.',
-        {'minScore': minScore},
-      );
+      throw InvalidInputException('minScore must be a finite number.', {
+        'minScore': minScore,
+      });
     }
     if (minScore < 0.0 || minScore > 1.0) {
-      throw InvalidInputException(
-        'minScore must be in the range [0.0, 1.0].',
-        {'minScore': minScore},
-      );
+      throw InvalidInputException('minScore must be in the range [0.0, 1.0].', {
+        'minScore': minScore,
+      });
     }
   }
 
   void _validateTopK(int? topK) {
     if (topK == null) return;
     if (topK <= 0) {
-      throw InvalidInputException(
-        'topK must be > 0 when provided.',
-        {'topK': topK},
-      );
+      throw InvalidInputException('topK must be > 0 when provided.', {
+        'topK': topK,
+      });
     }
   }
 }

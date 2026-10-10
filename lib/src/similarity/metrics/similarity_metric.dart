@@ -12,7 +12,7 @@ abstract interface class SimilarityMetric {
 
 /// A score paired with metric-specific detail metadata.
 ///
-/// Returned by [ExplainableMetric.scoreWithDetails]. The [details] map is
+/// Returned by [ExplainableMetric.scoreWithDetails]. The `details` map is
 /// surfaced on [SimilarityResult.metadata] by
 /// [StringSimilarityEngine.compareWithDetails].
 typedef ExplainedScore = ({
@@ -23,7 +23,7 @@ typedef ExplainedScore = ({
 /// Optional capability for metrics that can explain how a score was produced.
 ///
 /// When a metric implements this, [StringSimilarityEngine.compareWithDetails]
-/// surfaces the returned [ExplainedScore.details] on
+/// surfaces the returned record's `details` map on
 /// [SimilarityResult.metadata]. Metrics that do not implement it simply report
 /// an empty metadata map.
 abstract interface class ExplainableMetric implements SimilarityMetric {

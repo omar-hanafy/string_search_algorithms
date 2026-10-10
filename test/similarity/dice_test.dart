@@ -5,32 +5,41 @@ void main() {
   group('Dice Coefficient', () {
     test('standard comparison', () {
       expect(
-        StringSimilarity.compare('night', 'nacht',
-            algorithm: SimilarityAlgorithm.diceCoefficient),
+        StringSimilarity.compare(
+          'night',
+          'nacht',
+          algorithm: SimilarityAlgorithm.diceCoefficient,
+        ),
         closeTo(0.25, 0.01),
       );
     });
 
     test('extension method', () {
       expect(
-        'night'.similarityTo('nacht',
-            algorithm: SimilarityAlgorithm.diceCoefficient),
+        'night'.similarityTo(
+          'nacht',
+          algorithm: SimilarityAlgorithm.diceCoefficient,
+        ),
         closeTo(0.25, 0.01),
       );
     });
 
     test('identical strings', () {
       expect(
-        'hello'.similarityTo('hello',
-            algorithm: SimilarityAlgorithm.diceCoefficient),
+        'hello'.similarityTo(
+          'hello',
+          algorithm: SimilarityAlgorithm.diceCoefficient,
+        ),
         equals(1.0),
       );
     });
 
     test('completely different', () {
       expect(
-        'abc'.similarityTo('xyz',
-            algorithm: SimilarityAlgorithm.diceCoefficient),
+        'abc'.similarityTo(
+          'xyz',
+          algorithm: SimilarityAlgorithm.diceCoefficient,
+        ),
         equals(0.0),
       );
     });

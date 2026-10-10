@@ -5,8 +5,11 @@ void main() {
   group('Ngram', () {
     test('standard comparison', () {
       expect(
-        StringSimilarity.compare('hello', 'hallo',
-            algorithm: SimilarityAlgorithm.ngram),
+        StringSimilarity.compare(
+          'hello',
+          'hallo',
+          algorithm: SimilarityAlgorithm.ngram,
+        ),
         greaterThan(0.0),
       );
     });

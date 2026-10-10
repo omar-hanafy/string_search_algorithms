@@ -15,11 +15,14 @@ null-safe, with configurable engines and caching for repeated comparisons.
 
 ## Installation
 
+Requires Dart 3.13.5 or later. For Flutter projects, use Flutter 3.47.7 or later.
+The package has no runtime dependencies.
+
 Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  string_search_algorithms: ^1.0.1
+  string_search_algorithms: ^2.0.0
 ```
 
 ## Quick start

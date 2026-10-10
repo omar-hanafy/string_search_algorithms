@@ -20,8 +20,11 @@ void main() {
 
     test('handles word reordering (cosine witness)', () {
       final score = composite('john smith', 'smith john');
-      final jaroOnly = engine.compare('john smith', 'smith john',
-          algorithm: SimilarityAlgorithm.jaroWinkler);
+      final jaroOnly = engine.compare(
+        'john smith',
+        'smith john',
+        algorithm: SimilarityAlgorithm.jaroWinkler,
+      );
 
       expect(score, greaterThan(0.9));
       // The whole point: the ensemble beats the single default on reordering.
@@ -59,8 +62,11 @@ void main() {
       var previous = -1.0;
       for (final candidate in chain) {
         final score = c(candidate);
-        expect(score, greaterThanOrEqualTo(previous),
-            reason: 'score dropped at "$candidate"');
+        expect(
+          score,
+          greaterThanOrEqualTo(previous),
+          reason: 'score dropped at "$candidate"',
+        );
         previous = score;
       }
       expect(c('apple'), 1.0);
@@ -70,40 +76,48 @@ void main() {
   group('Composite metric - API surfaces', () {
     test('facade and engine agree for composite', () {
       expect(
-        StringSimilarity.compare('kitten', 'mitten',
-            algorithm: SimilarityAlgorithm.composite),
+        StringSimilarity.compare(
+          'kitten',
+          'mitten',
+          algorithm: SimilarityAlgorithm.composite,
+        ),
         closeTo(composite('kitten', 'mitten'), 1e-9),
       );
     });
 
     test('extension methods support composite', () {
       expect(
-        'kitten'
-            .similarityTo('mitten', algorithm: SimilarityAlgorithm.composite),
+        'kitten'.similarityTo(
+          'mitten',
+          algorithm: SimilarityAlgorithm.composite,
+        ),
         greaterThan(0.7),
       );
 
-      final details = 'john smith'.similarityDetails('smith john',
-          algorithm: SimilarityAlgorithm.composite);
+      final details = 'john smith'.similarityDetails(
+        'smith john',
+        algorithm: SimilarityAlgorithm.composite,
+      );
       expect(details.algorithm, SimilarityAlgorithm.composite);
       expect(details.metadata, isNotEmpty);
     });
 
     test('findBestMatch works with composite', () {
-      final best = StringSimilarity.findBestMatch(
-        'john smith',
-        ['michael jordan', 'smith john', 'random text'],
-        algorithm: SimilarityAlgorithm.composite,
-      );
+      final best = StringSimilarity.findBestMatch('john smith', [
+        'michael jordan',
+        'smith john',
+        'random text',
+      ], algorithm: SimilarityAlgorithm.composite);
       expect(best?.value, 'smith john');
     });
 
     test('produces comparable scores for ranking', () {
-      final ranked = engine.rankByRelevance(
-        'john smith',
-        ['michael jordan', 'smith john', 'jon smith', 'john smith jr'],
-        algorithm: SimilarityAlgorithm.composite,
-      );
+      final ranked = engine.rankByRelevance('john smith', [
+        'michael jordan',
+        'smith john',
+        'jon smith',
+        'john smith jr',
+      ], algorithm: SimilarityAlgorithm.composite);
 
       // The unrelated candidate must rank last; related ones float to the top.
       expect(ranked.last.value, 'michael jordan');
@@ -113,6 +127,65 @@ void main() {
   });
 
   group('Composite combiner options', () {
+    test('weightedMean with zero witness weights scores zero', () {
+      final engine = StringSimilarityEngine(
+        options: const SimilarityOptions(
+          algorithms: AlgorithmOptions(
+            composite: CompositeOptions(
+              combiner: CompositeCombiner.weightedMean,
+              jaroWinklerWeight: 0.0,
+              diceWeight: 0.0,
+              cosineWeight: 0.0,
+              overlapWeight: 0.0,
+            ),
+          ),
+        ),
+      );
+      expect(
+        engine.compare(
+          'abcdef',
+          'abcdefg',
+          algorithm: SimilarityAlgorithm.composite,
+        ),
+        0.0,
+      );
+    });
+
+    test('weightedMean is invariant under large finite weight scaling', () {
+      StringSimilarityEngine weightedMean(double weight) {
+        return StringSimilarityEngine(
+          options: SimilarityOptions(
+            algorithms: AlgorithmOptions(
+              composite: CompositeOptions(
+                combiner: CompositeCombiner.weightedMean,
+                jaroWinklerWeight: weight,
+                diceWeight: weight,
+                cosineWeight: weight,
+                overlapWeight: weight,
+              ),
+            ),
+          ),
+        );
+      }
+
+      final ordinary = weightedMean(1.0);
+      final large = weightedMean(1e308);
+      final expected = ordinary.compare(
+        'abcdef',
+        'abcdefg',
+        algorithm: SimilarityAlgorithm.composite,
+      );
+      expect(expected, greaterThan(0.5));
+      expect(
+        large.compare(
+          'abcdef',
+          'abcdefg',
+          algorithm: SimilarityAlgorithm.composite,
+        ),
+        closeTo(expected, 1e-12),
+      );
+    });
+
     test('scaledMax suppresses noise that raw max would keep', () {
       final scaledMax = StringSimilarityEngine();
       final rawMax = StringSimilarityEngine(
@@ -125,10 +198,16 @@ void main() {
 
       // 'apple' vs 'apricot' share a prefix: Jaro-Winkler raw sits just below
       // the noise floor, so calibration zeroes it while raw max keeps it.
-      final calibrated = scaledMax.compare('apple', 'apricot',
-          algorithm: SimilarityAlgorithm.composite);
-      final uncalibrated = rawMax.compare('apple', 'apricot',
-          algorithm: SimilarityAlgorithm.composite);
+      final calibrated = scaledMax.compare(
+        'apple',
+        'apricot',
+        algorithm: SimilarityAlgorithm.composite,
+      );
+      final uncalibrated = rawMax.compare(
+        'apple',
+        'apricot',
+        algorithm: SimilarityAlgorithm.composite,
+      );
 
       expect(uncalibrated, greaterThan(0.3)); // there is signal to suppress
       expect(calibrated, lessThan(0.2)); // calibration suppresses the noise
@@ -139,15 +218,19 @@ void main() {
       final weightedMean = StringSimilarityEngine(
         options: const SimilarityOptions(
           algorithms: AlgorithmOptions(
-            composite:
-                CompositeOptions(combiner: CompositeCombiner.weightedMean),
+            composite: CompositeOptions(
+              combiner: CompositeCombiner.weightedMean,
+            ),
           ),
         ),
       );
 
       final scaledMaxScore = composite('john smith', 'smith john');
-      final meanScore = weightedMean.compare('john smith', 'smith john',
-          algorithm: SimilarityAlgorithm.composite);
+      final meanScore = weightedMean.compare(
+        'john smith',
+        'smith john',
+        algorithm: SimilarityAlgorithm.composite,
+      );
 
       expect(meanScore, greaterThan(0.0));
       expect(meanScore, lessThan(scaledMaxScore));
@@ -165,8 +248,11 @@ void main() {
       // Cosine is the witness that catches reordering; zeroing its weight
       // lowers the composite score for a reordered pair.
       expect(
-        noCosine.compare('john smith', 'smith john',
-            algorithm: SimilarityAlgorithm.composite),
+        noCosine.compare(
+          'john smith',
+          'smith john',
+          algorithm: SimilarityAlgorithm.composite,
+        ),
         lessThan(composite('john smith', 'smith john')),
       );
     });

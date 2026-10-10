@@ -29,10 +29,9 @@ class StringSearchEngine {
     SearchAlgorithm algorithm = SearchAlgorithm.boyerMoore,
   }) {
     if (pattern.isEmpty) {
-      throw InvalidInputException(
-        'Pattern must not be empty for compile().',
-        {'pattern': pattern},
-      );
+      throw InvalidInputException('Pattern must not be empty for compile().', {
+        'pattern': pattern,
+      });
     }
 
     switch (algorithm) {
@@ -109,10 +108,9 @@ class StringSearchEngine {
   }) {
     // Spec: findAll with empty pattern throws.
     if (pattern.isEmpty) {
-      throw InvalidInputException(
-        'Pattern must not be empty for findAll().',
-        {'pattern': pattern},
-      );
+      throw InvalidInputException('Pattern must not be empty for findAll().', {
+        'pattern': pattern,
+      });
     }
 
     final compiled = compile(pattern, algorithm: algorithm);

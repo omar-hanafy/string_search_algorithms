@@ -24,11 +24,9 @@ abstract interface class CompiledPattern {
   /// `0 <= start <= text.length`.
   bool containsIn(String text, {int start = 0});
 
-  /// Returns all non-overlapping matches of the pattern in [text].
-  ///
-  /// (Note: Some implementations might allow overlapping matches if specified).
+  /// Returns all matches of the pattern in [text], including overlaps.
   List<SearchMatch> findAllIn(String text);
 
-  /// Returns the starting indices of all matches in [text].
+  /// Returns the starting indices of all matches in [text], including overlaps.
   List<int> findAllIndicesIn(String text);
 }

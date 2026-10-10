@@ -5,16 +5,21 @@ void main() {
   group('Jaccard', () {
     test('standard comparison', () {
       expect(
-        StringSimilarity.compare('cat dog', 'dog cat',
-            algorithm: SimilarityAlgorithm.jaccard),
+        StringSimilarity.compare(
+          'cat dog',
+          'dog cat',
+          algorithm: SimilarityAlgorithm.jaccard,
+        ),
         equals(1.0),
       );
     });
 
     test('extension method', () {
       expect(
-        'cat dog'
-            .similarityTo('dog cat', algorithm: SimilarityAlgorithm.jaccard),
+        'cat dog'.similarityTo(
+          'dog cat',
+          algorithm: SimilarityAlgorithm.jaccard,
+        ),
         equals(1.0),
       );
     });

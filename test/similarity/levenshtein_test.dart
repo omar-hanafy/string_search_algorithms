@@ -6,24 +6,31 @@ void main() {
     test('standard comparison', () {
       // distance is 3. len("sitting") is 7. score = 1 - 3/7 = 4/7 ~= 0.57
       expect(
-        StringSimilarity.compare('kitten', 'sitting',
-            algorithm: SimilarityAlgorithm.levenshtein),
+        StringSimilarity.compare(
+          'kitten',
+          'sitting',
+          algorithm: SimilarityAlgorithm.levenshtein,
+        ),
         closeTo(0.57, 0.01),
       );
     });
 
     test('extension method', () {
       expect(
-        'kitten'.similarityTo('sitting',
-            algorithm: SimilarityAlgorithm.levenshtein),
+        'kitten'.similarityTo(
+          'sitting',
+          algorithm: SimilarityAlgorithm.levenshtein,
+        ),
         closeTo(0.57, 0.01),
       );
     });
 
     test('identical strings', () {
       expect(
-        'hello'
-            .similarityTo('hello', algorithm: SimilarityAlgorithm.levenshtein),
+        'hello'.similarityTo(
+          'hello',
+          algorithm: SimilarityAlgorithm.levenshtein,
+        ),
         equals(1.0),
       );
     });
@@ -37,12 +44,18 @@ void main() {
     });
 
     test('empty string', () {
-      expect(''.similarityTo('a', algorithm: SimilarityAlgorithm.levenshtein),
-          equals(0.0));
-      expect('a'.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein),
-          equals(0.0));
-      expect(''.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein),
-          equals(1.0));
+      expect(
+        ''.similarityTo('a', algorithm: SimilarityAlgorithm.levenshtein),
+        equals(0.0),
+      );
+      expect(
+        'a'.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein),
+        equals(0.0),
+      );
+      expect(
+        ''.similarityTo('', algorithm: SimilarityAlgorithm.levenshtein),
+        equals(1.0),
+      );
     });
   });
 }

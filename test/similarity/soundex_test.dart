@@ -5,8 +5,11 @@ void main() {
   group('Soundex', () {
     test('standard comparison', () {
       expect(
-        StringSimilarity.compare('Robert', 'Rupert',
-            algorithm: SimilarityAlgorithm.soundex),
+        StringSimilarity.compare(
+          'Robert',
+          'Rupert',
+          algorithm: SimilarityAlgorithm.soundex,
+        ),
         equals(1.0),
       );
     });
@@ -20,9 +23,9 @@ void main() {
 
     test('non-matching', () {
       expect(
-          'Robert'
-              .similarityTo('Alice', algorithm: SimilarityAlgorithm.soundex),
-          equals(0.0));
+        'Robert'.similarityTo('Alice', algorithm: SimilarityAlgorithm.soundex),
+        equals(0.0),
+      );
     });
   });
 }

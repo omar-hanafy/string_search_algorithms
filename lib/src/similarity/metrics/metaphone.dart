@@ -29,16 +29,16 @@ class MetaphoneMetric implements SimilarityMetric {
 // Ordered replacements (longer patterns first) applied before main encoding.
 const List<(String from, String to)> _metaphoneReplacements =
     <(String, String)>[
-  ('sch', 'sk'),
-  ('kn', 'n'),
-  ('gn', 'n'),
-  ('pn', 'n'),
-  ('ae', 'e'),
-  ('wr', 'r'),
-  ('ck', 'k'),
-  ('ph', 'f'),
-  ('th', '0'),
-];
+      ('sch', 'sk'),
+      ('kn', 'n'),
+      ('gn', 'n'),
+      ('pn', 'n'),
+      ('ae', 'e'),
+      ('wr', 'r'),
+      ('ck', 'k'),
+      ('ph', 'f'),
+      ('th', '0'),
+    ];
 
 String _metaphoneCode(String input) {
   // Metaphone is typically defined over alphabetic characters.

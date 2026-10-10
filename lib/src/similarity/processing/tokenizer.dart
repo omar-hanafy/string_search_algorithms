@@ -19,8 +19,9 @@ class StringTokenizer {
     Tokenizer? tokenizer,
     bool stem = false,
   }) {
-    final rawTokens =
-        tokenizer != null ? tokenizer(text) : _defaultTokenize(text);
+    final rawTokens = tokenizer != null
+        ? tokenizer(text)
+        : _defaultTokenize(text);
 
     if (!stem) return rawTokens;
 

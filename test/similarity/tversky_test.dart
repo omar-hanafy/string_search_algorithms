@@ -3,6 +3,70 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tversky Index', () {
+    for (final ngramSize in [3, 5]) {
+      test('unequal strings shorter than $ngramSize do not match', () {
+        final engine = StringSimilarityEngine(
+          options: SimilarityOptions(
+            algorithms: AlgorithmOptions(ngramSize: ngramSize),
+          ),
+        );
+
+        expect(
+          engine.compare('ab', 'xy', algorithm: SimilarityAlgorithm.tversky),
+          0.0,
+        );
+        expect(
+          engine.compare(' AB ', 'ab', algorithm: SimilarityAlgorithm.tversky),
+          1.0,
+        );
+        expect(
+          engine
+              .findMatches(
+                'ab',
+                ['xy', 'ab'],
+                algorithm: SimilarityAlgorithm.tversky,
+                minScore: 1.0,
+              )
+              .map((match) => match.value),
+          ['ab'],
+        );
+      });
+    }
+
+    test('infinite alpha and beta are rejected at runtime', () {
+      for (final algorithms in [
+        const AlgorithmOptions(tverskyAlpha: double.infinity),
+        const AlgorithmOptions(tverskyBeta: double.infinity),
+      ]) {
+        expect(
+          () => StringSimilarityEngine(
+            options: SimilarityOptions(algorithms: algorithms),
+          ),
+          throwsA(isA<InvalidConfigurationException>()),
+        );
+      }
+    });
+
+    test('zero alpha and beta preserve intersection-only behavior', () {
+      final engine = StringSimilarityEngine(
+        options: const SimilarityOptions(
+          algorithms: AlgorithmOptions(tverskyAlpha: 0.0, tverskyBeta: 0.0),
+        ),
+      );
+      expect(
+        engine.compare(
+          'test',
+          'testing',
+          algorithm: SimilarityAlgorithm.tversky,
+        ),
+        1.0,
+      );
+      expect(
+        engine.compare('abc', 'xyz', algorithm: SimilarityAlgorithm.tversky),
+        0.0,
+      );
+    });
+
     test('matches ngram when alpha=1, beta=1', () {
       // Tversky with alpha=1, beta=1 is equivalent to Jaccard (Ngram)
       final options = const SimilarityOptions(
@@ -34,14 +98,19 @@ void main() {
       // score = 2 / 3.5 = 0.57.
 
       final engine = StringSimilarityEngine(
-          options: const SimilarityOptions(
-              algorithms:
-                  AlgorithmOptions(tverskyAlpha: 2.0, tverskyBeta: 0.5)));
+        options: const SimilarityOptions(
+          algorithms: AlgorithmOptions(tverskyAlpha: 2.0, tverskyBeta: 0.5),
+        ),
+      );
 
       expect(
-          engine.compare('test', 'testing',
-              algorithm: SimilarityAlgorithm.tversky),
-          closeTo(0.57, 0.01));
+        engine.compare(
+          'test',
+          'testing',
+          algorithm: SimilarityAlgorithm.tversky,
+        ),
+        closeTo(0.57, 0.01),
+      );
     });
   });
 }

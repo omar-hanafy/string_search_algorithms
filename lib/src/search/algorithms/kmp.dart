@@ -9,19 +9,18 @@ import 'package:string_search_algorithms/src/search/algorithms/search_algorithm.
 /// Throws [InvalidInputException] if [pattern] is empty.
 CompiledPattern compileKmp(String pattern) {
   if (pattern.isEmpty) {
-    throw InvalidInputException(
-      'Pattern must not be empty for compileKmp().',
-      {'pattern': pattern},
-    );
+    throw InvalidInputException('Pattern must not be empty for compileKmp().', {
+      'pattern': pattern,
+    });
   }
   return _KmpCompiledPattern(pattern);
 }
 
 class _KmpCompiledPattern implements CompiledPattern {
   _KmpCompiledPattern(String pattern)
-      : _pattern = pattern,
-        _patternUnits = pattern.codeUnits,
-        _lps = _buildLps(pattern.codeUnits);
+    : _pattern = pattern,
+      _patternUnits = pattern.codeUnits,
+      _lps = _buildLps(pattern.codeUnits);
 
   final String _pattern;
   final List<int> _patternUnits;
@@ -147,10 +146,10 @@ class _KmpCompiledPattern implements CompiledPattern {
 
   static void _validateStart(String text, int start) {
     if (start < 0 || start > text.length) {
-      throw InvalidInputException(
-        'Start must be within [0, text.length].',
-        {'start': start, 'textLength': text.length},
-      );
+      throw InvalidInputException('Start must be within [0, text.length].', {
+        'start': start,
+        'textLength': text.length,
+      });
     }
   }
 }

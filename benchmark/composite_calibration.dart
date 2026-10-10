@@ -29,17 +29,18 @@ const int _threeWordPairs = 3000;
 // Witnesses that make up the default composite recipe.
 const Map<String, SimilarityAlgorithm> _witnesses =
     <String, SimilarityAlgorithm>{
-  'jaroWinkler': SimilarityAlgorithm.jaroWinkler,
-  'dice': SimilarityAlgorithm.diceCoefficient,
-  'cosine': SimilarityAlgorithm.cosine,
-  'overlap': SimilarityAlgorithm.overlapCoefficient,
-};
+      'jaroWinkler': SimilarityAlgorithm.jaroWinkler,
+      'dice': SimilarityAlgorithm.diceCoefficient,
+      'cosine': SimilarityAlgorithm.cosine,
+      'overlap': SimilarityAlgorithm.overlapCoefficient,
+    };
 
 void main() {
   final words = _loadWords();
   if (words.length < 1000) {
-    stderr
-        .writeln('Not enough dictionary words to calibrate (${words.length}).');
+    stderr.writeln(
+      'Not enough dictionary words to calibrate (${words.length}).',
+    );
     exitCode = 1;
     return;
   }
@@ -51,8 +52,10 @@ void main() {
     for (var i = 0; i < _twoWordPairs; i++) _randomPhrase(words, rng, 2, 2),
     for (var i = 0; i < _threeWordPairs; i++) _randomPhrase(words, rng, 3, 3),
   ];
-  stdout.writeln('Scoring ${pairs.length} unrelated pairs across '
-      '${_witnesses.length} witnesses...\n');
+  stdout.writeln(
+    'Scoring ${pairs.length} unrelated pairs across '
+    '${_witnesses.length} witnesses...\n',
+  );
 
   final samples = <String, List<double>>{
     for (final name in _witnesses.keys) name: <double>[],
@@ -62,13 +65,16 @@ void main() {
   final engine = StringSimilarityEngine();
   for (final pair in pairs) {
     for (final entry in _witnesses.entries) {
-      samples[entry.key]!
-          .add(engine.compare(pair[0], pair[1], algorithm: entry.value));
+      samples[entry.key]!.add(
+        engine.compare(pair[0], pair[1], algorithm: entry.value),
+      );
     }
   }
 
-  stdout.writeln('witness      mean    p50    p90    p95    p99    max   '
-      '-> floor (p95)');
+  stdout.writeln(
+    'witness      mean    p50    p90    p95    p99    max   '
+    '-> floor (p95)',
+  );
   stdout.writeln('-' * 72);
   final suggested = <String, double>{};
   for (final name in _witnesses.keys) {
@@ -108,7 +114,11 @@ List<String> _loadWords() {
 /// Builds a pair of distinct random phrases each with [minWords]..[maxWords]
 /// words. Distinctness keeps us measuring noise, not accidental exact matches.
 List<String> _randomPhrase(
-    List<String> words, Random rng, int minWords, int maxWords) {
+  List<String> words,
+  Random rng,
+  int minWords,
+  int maxWords,
+) {
   String phrase() {
     final count = minWords + rng.nextInt(maxWords - minWords + 1);
     return List<String>.generate(

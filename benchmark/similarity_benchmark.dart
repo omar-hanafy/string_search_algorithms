@@ -19,33 +19,57 @@ class SimilarityBenchmark {
   final List<List<String>> longPairs = [
     [
       'The quick brown fox jumps over the lazy dog',
-      'The quick brown fox jumps over the lazy cat'
+      'The quick brown fox jumps over the lazy cat',
     ],
     [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+      'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     ],
   ];
 
   void run() {
-    _measure('Dice Coefficient (Short)', SimilarityAlgorithm.diceCoefficient,
-        shortPairs, 10000);
-    _measure('Dice Coefficient (Long)', SimilarityAlgorithm.diceCoefficient,
-        longPairs, 10000);
+    _measure(
+      'Dice Coefficient (Short)',
+      SimilarityAlgorithm.diceCoefficient,
+      shortPairs,
+      10000,
+    );
+    _measure(
+      'Dice Coefficient (Long)',
+      SimilarityAlgorithm.diceCoefficient,
+      longPairs,
+      10000,
+    );
 
     print('');
 
-    _measure('Levenshtein (Short)', SimilarityAlgorithm.levenshtein, shortPairs,
-        10000);
-    _measure('Levenshtein (Long)', SimilarityAlgorithm.levenshtein, longPairs,
-        1000); // Expensive
+    _measure(
+      'Levenshtein (Short)',
+      SimilarityAlgorithm.levenshtein,
+      shortPairs,
+      10000,
+    );
+    _measure(
+      'Levenshtein (Long)',
+      SimilarityAlgorithm.levenshtein,
+      longPairs,
+      1000,
+    ); // Expensive
 
     print('');
 
-    _measure('Jaro-Winkler (Short)', SimilarityAlgorithm.jaroWinkler,
-        shortPairs, 10000);
-    _measure('Jaro-Winkler (Long)', SimilarityAlgorithm.jaroWinkler, longPairs,
-        10000);
+    _measure(
+      'Jaro-Winkler (Short)',
+      SimilarityAlgorithm.jaroWinkler,
+      shortPairs,
+      10000,
+    );
+    _measure(
+      'Jaro-Winkler (Long)',
+      SimilarityAlgorithm.jaroWinkler,
+      longPairs,
+      10000,
+    );
 
     print('');
 
