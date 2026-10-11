@@ -39,4 +39,4 @@ jobs:
         run: dart pub global activate pana 0.23.14
 
       - name: Require full package score
-        run: dart pub global run pana --exit-code-threshold 0 --dartdoc-version sdk .
+        run: dart pub global run pana --exit-code-threshold 0 .
