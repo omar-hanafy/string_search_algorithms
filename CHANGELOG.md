@@ -17,8 +17,8 @@ All notable changes to this package will be documented in this file.
   `InvalidConfigurationException`.
 - Preserve composite weighted-mean scores when large finite weights would
   otherwise overflow.
-- Correct compiled-pattern documentation to state that searches include
-  overlapping matches.
+- Correct documentation for overlapping substring matches and which similarity
+  metrics use custom tokenization.
 
 ## 1.1.0
 

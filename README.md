@@ -8,7 +8,7 @@ null-safe, with configurable engines and caching for repeated comparisons.
 - Similarity metrics: Levenshtein, Jaro-Winkler, Cosine, Jaccard, and more.
 - Composite "smart" matching: a calibrated ensemble that stays robust across
   typos, word reordering, and containment - and is safe to rank with.
-- Search algorithms: KMP, Boyer-Moore, Rabin-Karp, and a standard wrapper.
+- Search algorithms: KMP, Boyer-Moore, and Rabin-Karp.
 - Instance-based engines with configurable normalization and caching.
 - Compiled patterns for efficient repeated substring searches.
 - Extension methods for ergonomic usage on String.
