@@ -57,11 +57,7 @@ extension StringSearchExtensions on String {
     String pattern, {
     SearchAlgorithm algorithm = SearchAlgorithm.boyerMoore,
   }) {
-    return StringSearch.findAll(
-      this,
-      pattern,
-      algorithm: algorithm,
-    );
+    return StringSearch.findAll(this, pattern, algorithm: algorithm);
   }
 
   /// Returns all match indices (including overlapping matches).
@@ -74,10 +70,6 @@ extension StringSearchExtensions on String {
     String pattern, {
     SearchAlgorithm algorithm = SearchAlgorithm.boyerMoore,
   }) {
-    return StringSearch.findAllIndices(
-      this,
-      pattern,
-      algorithm: algorithm,
-    );
+    return StringSearch.findAllIndices(this, pattern, algorithm: algorithm);
   }
 }

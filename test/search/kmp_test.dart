@@ -8,16 +8,20 @@ void main() {
   group('KMP', () {
     test('indexOf', () {
       expect(
-          StringSearch.indexOf(text, pattern, algorithm: SearchAlgorithm.kmp),
-          equals(16));
+        StringSearch.indexOf(text, pattern, algorithm: SearchAlgorithm.kmp),
+        equals(16),
+      );
     });
 
     test('findAll', () {
       final t = 'aba aba aba';
       final p = 'aba';
       // Indices: 0, 4, 8
-      final matches =
-          StringSearch.findAll(t, p, algorithm: SearchAlgorithm.kmp);
+      final matches = StringSearch.findAll(
+        t,
+        p,
+        algorithm: SearchAlgorithm.kmp,
+      );
       expect(matches.length, equals(3));
       expect(matches[0].index, equals(0));
       expect(matches[1].index, equals(4));
@@ -25,8 +29,10 @@ void main() {
     });
 
     test('not found', () {
-      expect(StringSearch.indexOf(text, 'cat', algorithm: SearchAlgorithm.kmp),
-          equals(-1));
+      expect(
+        StringSearch.indexOf(text, 'cat', algorithm: SearchAlgorithm.kmp),
+        equals(-1),
+      );
     });
   });
 }

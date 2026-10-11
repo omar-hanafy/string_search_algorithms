@@ -7,10 +7,9 @@ class LruCache<K, V extends Object> {
   /// Creates a new [LruCache] with the given [capacity].
   LruCache({required this.capacity}) {
     if (capacity <= 0) {
-      throw InvalidConfigurationException(
-        'LruCache capacity must be > 0',
-        {'capacity': capacity},
-      );
+      throw InvalidConfigurationException('LruCache capacity must be > 0', {
+        'capacity': capacity,
+      });
     }
   }
 
@@ -57,8 +56,8 @@ class LruCache<K, V extends Object> {
 
   /// Returns a map of cache statistics (length, capacity, utilization).
   Map<String, Object?> get stats => <String, Object?>{
-        'length': _map.length,
-        'capacity': capacity,
-        'utilization': capacity == 0 ? 0.0 : _map.length / capacity,
-      };
+    'length': _map.length,
+    'capacity': capacity,
+    'utilization': capacity == 0 ? 0.0 : _map.length / capacity,
+  };
 }

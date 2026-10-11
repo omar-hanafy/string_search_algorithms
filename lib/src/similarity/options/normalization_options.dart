@@ -44,7 +44,8 @@ class NormalizationOptions {
   /// Custom function to run after standard normalization.
   final PostProcessor? postProcessor;
 
-  /// Tokenizer used by token-based metrics (cosine/jaccard/overlap/tversky).
+  /// Tokenizer used by Cosine and Jaccard, including the Composite metric's
+  /// Cosine witness.
   final Tokenizer? tokenizer;
 
   /// Creates a copy of this object with the given fields replaced with the new

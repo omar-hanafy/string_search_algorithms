@@ -19,10 +19,10 @@ CompiledPattern compileRabinKarp(String pattern) {
 
 class _RabinKarpCompiledPattern implements CompiledPattern {
   _RabinKarpCompiledPattern(String pattern)
-      : _pattern = pattern,
-        _m = pattern.length,
-        _patternHash = _hash(pattern, _base, _mod),
-        _highOrderFactor = _computeHighOrderFactor(pattern.length, _base, _mod);
+    : _pattern = pattern,
+      _m = pattern.length,
+      _patternHash = _hash(pattern, _base, _mod),
+      _highOrderFactor = _computeHighOrderFactor(pattern.length, _base, _mod);
 
   static const int _base = 256;
   // 2^31 - 1 (prime). Safe under JS number integer precision constraints.
@@ -142,7 +142,12 @@ class _RabinKarpCompiledPattern implements CompiledPattern {
   }
 
   static int _hashWindow(
-      String text, int start, int length, int base, int mod) {
+    String text,
+    int start,
+    int length,
+    int base,
+    int mod,
+  ) {
     var hash = 0;
     final end = start + length;
     for (var i = start; i < end; i++) {
@@ -171,10 +176,10 @@ class _RabinKarpCompiledPattern implements CompiledPattern {
 
   static void _validateStart(String text, int start) {
     if (start < 0 || start > text.length) {
-      throw InvalidInputException(
-        'Start must be within [0, text.length].',
-        {'start': start, 'textLength': text.length},
-      );
+      throw InvalidInputException('Start must be within [0, text.length].', {
+        'start': start,
+        'textLength': text.length,
+      });
     }
   }
 }

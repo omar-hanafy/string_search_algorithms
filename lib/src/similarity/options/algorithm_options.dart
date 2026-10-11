@@ -11,12 +11,13 @@ class AlgorithmOptions {
     this.tverskyBeta = 0.5,
     this.stemTokens = false,
     this.composite = const CompositeOptions(),
-  })  : assert(ngramSize > 0),
-        assert(tverskyAlpha >= 0.0),
-        assert(tverskyBeta >= 0.0),
-        assert(jaroWinklerPrefixScale >= 0.0 && jaroWinklerPrefixScale <= 0.25),
-        assert(jaroWinklerBoostThreshold >= 0.0 &&
-            jaroWinklerBoostThreshold <= 1.0);
+  }) : assert(ngramSize > 0),
+       assert(tverskyAlpha >= 0.0),
+       assert(tverskyBeta >= 0.0),
+       assert(jaroWinklerPrefixScale >= 0.0 && jaroWinklerPrefixScale <= 0.25),
+       assert(
+         jaroWinklerBoostThreshold >= 0.0 && jaroWinklerBoostThreshold <= 1.0,
+       );
 
   /// Scaling factor for the Jaro-Winkler prefix adjustment (default: 0.1).
   final double jaroWinklerPrefixScale;
@@ -27,10 +28,10 @@ class AlgorithmOptions {
   /// The size of n-grams (e.g., 3 for trigrams) (default: 3).
   final int ngramSize;
 
-  /// The alpha parameter for Tversky index (default: 0.5).
+  /// The finite, nonnegative alpha parameter for Tversky index (default: 0.5).
   final double tverskyAlpha;
 
-  /// The beta parameter for Tversky index (default: 0.5).
+  /// The finite, nonnegative beta parameter for Tversky index (default: 0.5).
   final double tverskyBeta;
 
   /// Whether to stem tokens before comparing (default: false).
@@ -67,20 +68,19 @@ class AlgorithmOptions {
   /// (not AssertionError) when invalid.
   void validate() {
     if (ngramSize <= 0) {
-      throw InvalidConfigurationException(
-        'ngramSize must be > 0',
-        {'ngramSize': ngramSize},
-      );
+      throw InvalidConfigurationException('ngramSize must be > 0', {
+        'ngramSize': ngramSize,
+      });
     }
-    if (tverskyAlpha < 0.0 || tverskyAlpha.isNaN) {
+    if (tverskyAlpha < 0.0 || !tverskyAlpha.isFinite) {
       throw InvalidConfigurationException(
-        'tverskyAlpha must be >= 0.0',
+        'tverskyAlpha must be a finite value >= 0.0',
         {'tverskyAlpha': tverskyAlpha},
       );
     }
-    if (tverskyBeta < 0.0 || tverskyBeta.isNaN) {
+    if (tverskyBeta < 0.0 || !tverskyBeta.isFinite) {
       throw InvalidConfigurationException(
-        'tverskyBeta must be >= 0.0',
+        'tverskyBeta must be a finite value >= 0.0',
         {'tverskyBeta': tverskyBeta},
       );
     }
@@ -127,7 +127,7 @@ enum CompositeCombiner {
 ///
 /// The composite combines several witness metrics (Jaro-Winkler, Dice, Cosine,
 /// Overlap) into one stable score. Each witness is first remapped through a
-/// per-witness noise [floor] so the witnesses become comparable:
+/// per-witness noise floor so the witnesses become comparable:
 ///
 /// ```text
 /// scaled = clamp01((raw - floor) / (1 - floor))   // raw <= floor maps to 0

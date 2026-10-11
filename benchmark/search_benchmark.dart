@@ -13,33 +13,73 @@ class SearchBenchmark {
 
   final String longText =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' *
-          1000; // ~55KB
+      1000; // ~55KB
   final String longPattern = 'consectetur';
 
   void run() {
     print('--- Short Text (${shortText.length} chars) ---');
     _measure('KMP', SearchAlgorithm.kmp, shortText, shortPattern, 10000);
-    _measure('Boyer-Moore', SearchAlgorithm.boyerMoore, shortText, shortPattern,
-        10000);
-    _measure('Rabin-Karp', SearchAlgorithm.rabinKarp, shortText, shortPattern,
-        10000);
     _measure(
-        'Standard', SearchAlgorithm.boyerMoore, shortText, shortPattern, 10000);
+      'Boyer-Moore',
+      SearchAlgorithm.boyerMoore,
+      shortText,
+      shortPattern,
+      10000,
+    );
+    _measure(
+      'Rabin-Karp',
+      SearchAlgorithm.rabinKarp,
+      shortText,
+      shortPattern,
+      10000,
+    );
+    _measure(
+      'Standard',
+      SearchAlgorithm.boyerMoore,
+      shortText,
+      shortPattern,
+      10000,
+    );
 
     print('\n--- Long Text (${longText.length} chars) ---');
     _measure('KMP', SearchAlgorithm.kmp, longText, longPattern, 100);
     _measure(
-        'Boyer-Moore', SearchAlgorithm.boyerMoore, longText, longPattern, 100);
+      'Boyer-Moore',
+      SearchAlgorithm.boyerMoore,
+      longText,
+      longPattern,
+      100,
+    );
     _measure(
-        'Rabin-Karp', SearchAlgorithm.rabinKarp, longText, longPattern, 100);
+      'Rabin-Karp',
+      SearchAlgorithm.rabinKarp,
+      longText,
+      longPattern,
+      100,
+    );
     _measure(
-        'Standard', SearchAlgorithm.boyerMoore, longText, longPattern, 100);
+      'Standard',
+      SearchAlgorithm.boyerMoore,
+      longText,
+      longPattern,
+      100,
+    );
 
     print('\n--- Compiled Pattern Reuse (Short Text) ---');
     _measureCompiled(
-        'KMP', SearchAlgorithm.kmp, shortText, shortPattern, 10000);
-    _measureCompiled('Boyer-Moore', SearchAlgorithm.boyerMoore, shortText,
-        shortPattern, 10000);
+      'KMP',
+      SearchAlgorithm.kmp,
+      shortText,
+      shortPattern,
+      10000,
+    );
+    _measureCompiled(
+      'Boyer-Moore',
+      SearchAlgorithm.boyerMoore,
+      shortText,
+      shortPattern,
+      10000,
+    );
   }
 
   void _measure(

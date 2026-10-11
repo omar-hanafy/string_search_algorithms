@@ -41,12 +41,7 @@ class StringSearch {
     SearchAlgorithm algorithm = SearchAlgorithm.boyerMoore,
     int start = 0,
   }) {
-    return _engine.indexOf(
-      text,
-      pattern,
-      algorithm: algorithm,
-      start: start,
-    );
+    return _engine.indexOf(text, pattern, algorithm: algorithm, start: start);
   }
 
   /// Returns true if [pattern] is found in [text].
@@ -62,12 +57,7 @@ class StringSearch {
     SearchAlgorithm algorithm = SearchAlgorithm.boyerMoore,
     int start = 0,
   }) {
-    return _engine.contains(
-      text,
-      pattern,
-      algorithm: algorithm,
-      start: start,
-    );
+    return _engine.contains(text, pattern, algorithm: algorithm, start: start);
   }
 
   /// Returns all matches of [pattern] in [text].
@@ -84,11 +74,7 @@ class StringSearch {
     String pattern, {
     SearchAlgorithm algorithm = SearchAlgorithm.boyerMoore,
   }) {
-    return _engine.findAll(
-      text,
-      pattern,
-      algorithm: algorithm,
-    );
+    return _engine.findAll(text, pattern, algorithm: algorithm);
   }
 
   /// Returns all start indices of matches of [pattern] in [text].
@@ -104,10 +90,6 @@ class StringSearch {
     String pattern, {
     SearchAlgorithm algorithm = SearchAlgorithm.boyerMoore,
   }) {
-    return _engine.findAllIndices(
-      text,
-      pattern,
-      algorithm: algorithm,
-    );
+    return _engine.findAllIndices(text, pattern, algorithm: algorithm);
   }
 }

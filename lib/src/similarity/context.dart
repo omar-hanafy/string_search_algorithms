@@ -26,11 +26,7 @@ class NgramCacheKey {
 /// Holds references to the various caches used by the engine.
 class SimilarityCaches {
   /// Creates a [SimilarityCaches] container.
-  SimilarityCaches({
-    this.normalized,
-    this.bigrams,
-    this.ngrams,
-  });
+  SimilarityCaches({this.normalized, this.bigrams, this.ngrams});
 
   /// Cache for normalized strings.
   final LruCache<String, String>? normalized;
@@ -105,8 +101,10 @@ class SimilarityContext {
     final counts = <String, int>{};
     final codeUnits = normalized.codeUnits;
     for (var i = 0; i < codeUnits.length - 1; i++) {
-      final bigram =
-          String.fromCharCodes(<int>[codeUnits[i], codeUnits[i + 1]]);
+      final bigram = String.fromCharCodes(<int>[
+        codeUnits[i],
+        codeUnits[i + 1],
+      ]);
       counts[bigram] = (counts[bigram] ?? 0) + 1;
     }
 

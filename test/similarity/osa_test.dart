@@ -6,8 +6,11 @@ void main() {
     test('simple transposition', () {
       // Transposition allowed: 'abc' -> 'acb' distance 1
       expect(
-        StringSimilarity.compare('abc', 'acb',
-            algorithm: SimilarityAlgorithm.osa),
+        StringSimilarity.compare(
+          'abc',
+          'acb',
+          algorithm: SimilarityAlgorithm.osa,
+        ),
         closeTo(0.66, 0.01), // 1 distance / 3 len = 0.66 similarity
       );
     });
@@ -39,13 +42,21 @@ void main() {
       // OSA Score = 1 - 3/3 = 0.0
 
       expect(
-          StringSimilarity.compare('ca', 'abc',
-              algorithm: SimilarityAlgorithm.osa),
-          equals(0.0));
+        StringSimilarity.compare(
+          'ca',
+          'abc',
+          algorithm: SimilarityAlgorithm.osa,
+        ),
+        equals(0.0),
+      );
       expect(
-          StringSimilarity.compare('ca', 'abc',
-              algorithm: SimilarityAlgorithm.damerauLevenshtein),
-          closeTo(0.33, 0.01));
+        StringSimilarity.compare(
+          'ca',
+          'abc',
+          algorithm: SimilarityAlgorithm.damerauLevenshtein,
+        ),
+        closeTo(0.33, 0.01),
+      );
     });
   });
 }

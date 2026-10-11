@@ -2,6 +2,24 @@
 
 All notable changes to this package will be documented in this file.
 
+## 2.0.0
+
+### Breaking
+
+- Require Dart 3.13.5 or later (Flutter 3.47.7 or later for Flutter projects).
+  Upgrade the SDK before updating this package.
+
+### Fixed
+
+- Prevent Overlap and Tversky from treating different strings shorter than the
+  configured n-gram size as perfect matches.
+- Reject infinite Tversky alpha and beta parameters with
+  `InvalidConfigurationException`.
+- Preserve composite weighted-mean scores when large finite weights would
+  otherwise overflow.
+- Correct documentation for overlapping substring matches and which similarity
+  metrics use custom tokenization.
+
 ## 1.1.0
 
 ### Added

@@ -5,10 +5,7 @@ import 'package:string_search_algorithms/src/similarity/processing/unicode/diacr
 /// Handles string normalization based on provided [NormalizationOptions].
 class StringNormalizer {
   /// Creates a [StringNormalizer].
-  StringNormalizer({
-    required this.options,
-    this.cache,
-  });
+  StringNormalizer({required this.options, this.cache});
 
   /// The options to apply.
   final NormalizationOptions options;
@@ -19,8 +16,10 @@ class StringNormalizer {
   static final RegExp _whitespaceRegex = RegExp(r'\s+');
 
   // Keep letters, numbers, and whitespace; remove everything else.
-  static final RegExp _specialCharsRegex =
-      RegExp(r'[^\p{L}\p{N}\s]', unicode: true);
+  static final RegExp _specialCharsRegex = RegExp(
+    r'[^\p{L}\p{N}\s]',
+    unicode: true,
+  );
 
   /// Normalizes [input] according to [options].
   String normalize(String input) {

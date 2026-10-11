@@ -8,16 +8,23 @@ void main() {
   group('Boyer-Moore', () {
     test('indexOf', () {
       expect(
-          StringSearch.indexOf(text, pattern,
-              algorithm: SearchAlgorithm.boyerMoore),
-          equals(16));
+        StringSearch.indexOf(
+          text,
+          pattern,
+          algorithm: SearchAlgorithm.boyerMoore,
+        ),
+        equals(16),
+      );
     });
 
     test('findAll', () {
       final t = 'aba aba aba';
       final p = 'aba';
-      final matches =
-          StringSearch.findAll(t, p, algorithm: SearchAlgorithm.boyerMoore);
+      final matches = StringSearch.findAll(
+        t,
+        p,
+        algorithm: SearchAlgorithm.boyerMoore,
+      );
       expect(matches.length, equals(3));
       expect(matches[0].index, equals(0));
       expect(matches[1].index, equals(4));

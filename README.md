@@ -8,18 +8,21 @@ null-safe, with configurable engines and caching for repeated comparisons.
 - Similarity metrics: Levenshtein, Jaro-Winkler, Cosine, Jaccard, and more.
 - Composite "smart" matching: a calibrated ensemble that stays robust across
   typos, word reordering, and containment - and is safe to rank with.
-- Search algorithms: KMP, Boyer-Moore, Rabin-Karp, and a standard wrapper.
+- Search algorithms: KMP, Boyer-Moore, and Rabin-Karp.
 - Instance-based engines with configurable normalization and caching.
 - Compiled patterns for efficient repeated substring searches.
 - Extension methods for ergonomic usage on String.
 
 ## Installation
 
+Requires Dart 3.13.5 or later. For Flutter projects, use Flutter 3.47.7 or later.
+The package has no runtime dependencies.
+
 Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  string_search_algorithms: ^1.0.1
+  string_search_algorithms: ^2.0.0
 ```
 
 ## Quick start

@@ -6,8 +6,11 @@ void main() {
     test('standard comparison', () {
       // 1011 vs 1001. 1 diff. Length 4. Score 0.75.
       expect(
-        StringSimilarity.compare('1011', '1001',
-            algorithm: SimilarityAlgorithm.hamming),
+        StringSimilarity.compare(
+          '1011',
+          '1001',
+          algorithm: SimilarityAlgorithm.hamming,
+        ),
         equals(0.75),
       );
     });

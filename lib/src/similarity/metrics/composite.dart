@@ -49,20 +49,30 @@ class CompositeMetric implements ExplainableMetric {
     // Evaluate only applicable witnesses. Gating avoids empty-gram artifacts
     // (e.g. set metrics returning a spurious 1.0 on tiny inputs).
     final witnesses = <_Witness>[
-      _Witness('jaroWinkler', _jaroWinkler.score(ctx), opts.jaroWinklerWeight,
-          opts.jaroWinklerFloor),
+      _Witness(
+        'jaroWinkler',
+        _jaroWinkler.score(ctx),
+        opts.jaroWinklerWeight,
+        opts.jaroWinklerFloor,
+      ),
       if (minLen >= 2)
         _Witness('dice', _dice.score(ctx), opts.diceWeight, opts.diceFloor),
       _Witness(
-          'cosine', _cosine.score(ctx), opts.cosineWeight, opts.cosineFloor),
+        'cosine',
+        _cosine.score(ctx),
+        opts.cosineWeight,
+        opts.cosineFloor,
+      ),
       if (minLen > ngramSize)
-        _Witness('overlap', _overlap.score(ctx), opts.overlapWeight,
-            opts.overlapFloor),
+        _Witness(
+          'overlap',
+          _overlap.score(ctx),
+          opts.overlapWeight,
+          opts.overlapFloor,
+        ),
     ];
 
-    final raw = <String, double>{
-      for (final w in witnesses) w.name: w.raw,
-    };
+    final raw = <String, double>{for (final w in witnesses) w.name: w.raw};
 
     return _CompositeOutcome(
       score: _clamp01(_combine(witnesses, opts.combiner)),
@@ -82,11 +92,19 @@ class CompositeMetric implements ExplainableMetric {
         }
         return best;
       case CompositeCombiner.weightedMean:
+        // A common weight scale cancels from the mean. Normalize first so
+        // summing valid, finite weights cannot overflow.
+        final maxWeight = witnesses.fold<double>(
+          0.0,
+          (largest, witness) => math.max(largest, witness.weight),
+        );
+        if (maxWeight == 0.0) return 0.0;
         var acc = 0.0;
         var sumWeight = 0.0;
         for (final w in witnesses) {
-          acc += w.weight * _scale(w.raw, w.floor);
-          sumWeight += w.weight;
+          final weight = w.weight / maxWeight;
+          acc += weight * _scale(w.raw, w.floor);
+          sumWeight += weight;
         }
         return sumWeight == 0.0 ? 0.0 : acc / sumWeight;
       case CompositeCombiner.max:

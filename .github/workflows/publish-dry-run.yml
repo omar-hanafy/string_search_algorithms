@@ -15,15 +15,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Validate release lane
+        env:
+          RELEASE_LANE: ${{ github.base_ref || github.ref_name }}
+        run: bash .github/scripts/release-metadata.sh "$RELEASE_LANE"
 
       - name: Setup Dart
-        uses: dart-lang/setup-dart@v1
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
         with:
-          sdk: stable
+          sdk: 3.13.5
 
       - name: Install dependencies
         run: dart pub get
 
       - name: Pub publish dry-run
         run: dart pub publish --dry-run
+
+      - name: Install package scorer
+        run: dart pub global activate pana 0.23.14
+
+      - name: Require full package score
+        run: dart pub global run pana --exit-code-threshold 0 .

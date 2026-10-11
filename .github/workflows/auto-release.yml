@@ -7,67 +7,84 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: auto-release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          token: ${{ secrets.TAG_PUSH_PAT }}
+          persist-credentials: false
 
-      - name: Check pubspec change
+      - name: Validate release lane and metadata
+        id: metadata
+        run: bash .github/scripts/release-metadata.sh "$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Check version change
         id: changes
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          RELEASE_VERSION: ${{ steps.metadata.outputs.version }}
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^pubspec.yaml$'; then
+          previous_version=$(git show "$BEFORE_SHA:pubspec.yaml" | awk '$1 == "version:" {print $2}')
+          if [[ -z "$previous_version" ]]; then
+            echo "Failed to read the previous package version."
+            exit 1
+          fi
+          if [[ "$previous_version" != "$RELEASE_VERSION" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Compute tag
-        id: tag
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          package=$(awk '/^name:/ {print $2}' pubspec.yaml)
-          version=$(awk '/^version:/ {print $2}' pubspec.yaml)
-          if [[ -z "$package" || -z "$version" ]]; then
-            echo "Failed to read package name or version from pubspec.yaml"
-            exit 1
-          fi
-          if [[ "${GITHUB_REF_NAME}" == "main" && "$version" == *-* ]]; then
-            echo "Main requires a stable version (no pre-release suffix)."
-            exit 1
-          fi
-          if [[ "${GITHUB_REF_NAME}" == "dev" && "$version" != *-* ]]; then
-            echo "Dev requires a pre-release version suffix (e.g. -dev.1)."
-            exit 1
-          fi
-          echo "tag=${package}-v${version}" >> "$GITHUB_OUTPUT"
-
       - name: Fail if tag exists
         if: steps.changes.outputs.changed == 'true'
+        env:
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
         run: |
-          tag="${{ steps.tag.outputs.tag }}"
-          if git rev-parse "$tag" >/dev/null 2>&1; then
-            echo "Tag $tag already exists. Bump version and re-run."
+          if git show-ref --verify --quiet "refs/tags/$RELEASE_TAG"; then
+            echo "Tag $RELEASE_TAG already exists. Bump the version."
             exit 1
           fi
+
+      - name: Prepare release notes
+        id: notes
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          RELEASE_VERSION: ${{ steps.metadata.outputs.version }}
+        run: |
+          notes_file=$(mktemp "$RUNNER_TEMP/release-notes.XXXXXX")
+          bash .github/scripts/release-notes.sh "$RELEASE_VERSION" > "$notes_file"
+          echo "path=$notes_file" >> "$GITHUB_OUTPUT"
 
       - name: Create and push tag
         if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.TAG_PUSH_PAT }}
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
         run: |
-          tag="${{ steps.tag.outputs.tag }}"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "$tag"
-          git push origin "$tag"
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo "TAG_PUSH_PAT is required to trigger the publish workflow."
+            exit 1
+          fi
+          gh auth setup-git
+          git tag "$RELEASE_TAG" "$GITHUB_SHA"
+          git push origin "refs/tags/$RELEASE_TAG"
 
       - name: Create GitHub release
         if: steps.changes.outputs.changed == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          generate_release_notes: true
-          prerelease: ${{ github.ref_name == 'dev' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
+          RELEASE_NOTES: ${{ steps.notes.outputs.path }}
+        run: |
+          args=(--verify-tag --notes-file "$RELEASE_NOTES" --title "$RELEASE_TAG")
+          if [[ "$GITHUB_REF_NAME" == "dev" ]]; then
+            args+=(--prerelease)
+          fi
+          gh release create "$RELEASE_TAG" "${args[@]}"

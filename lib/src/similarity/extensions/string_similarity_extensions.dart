@@ -15,11 +15,7 @@ extension StringSimilarityExtensions on String {
     String other, {
     SimilarityAlgorithm algorithm = SimilarityAlgorithm.jaroWinkler,
   }) {
-    return StringSimilarity.compare(
-      this,
-      other,
-      algorithm: algorithm,
-    );
+    return StringSimilarity.compare(this, other, algorithm: algorithm);
   }
 
   /// Similarity comparison with detailed output.
